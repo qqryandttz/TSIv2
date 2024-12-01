@@ -9,6 +9,7 @@ public class ResolutionChanger {
         JComboBox<String> resolutionComboBox = new JComboBox<>(resolutions);
         JButton button = new JButton("调整分辨率");
 
+        // 123
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
