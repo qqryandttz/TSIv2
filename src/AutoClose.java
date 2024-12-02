@@ -36,6 +36,7 @@ public class AutoClose {
             }
         }, 5000);
 
+
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setAlwaysOnTop(true);
         dialog.setModal(false);
