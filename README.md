@@ -22,7 +22,7 @@
 `对话者：对话内容`
 #### 例如
 
-![alt text](image-1.png)
+![alt text](./README_image/image-1.png)
 
 `旷月：领队，如果你遇到了什么线索可以和我们说。`
 
@@ -34,7 +34,7 @@
 `#段落内容`
 #### 例如
 
-![alt text](image-2.png)
+![alt text](./README_image/image-2.png)
 
 `#一群人很快围在了一起，蓝清了声嗓子，故作镇静。`
 
@@ -49,9 +49,9 @@
 `~音效（仅播放一次）`
 #### 例如
 
-![alt text](image-3.png)
+![alt text](./README_image/image-3.png)
 
-![alt text](image-4.png)
+![alt text](./README_image/image-4.png)
 
 ### 第4种：结束语句
 
@@ -151,7 +151,7 @@
 （￥这个符号在键盘4上面，中文模式打出来就是￥，英文模式打出来是$
 #### 例如
 
-![alt text](image-5.png)
+![alt text](./README_image/image-5.png)
 ```
 #萤从肩上的包里拿出一个摄像机，揽住我的肩膀摆了个POS。
 ￥A我也摆了个POSB我扮了个鬼脸C我面无表情
