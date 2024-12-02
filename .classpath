@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+    <classpathtry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAER/org"/>
+    <classpathtry kind="src" path="src"/>
+    <classpathtry kind="lib" path="jl1.0.1.jar"/>
+    <classpathtry kind="output" path="bin"/>
+<classpath>
