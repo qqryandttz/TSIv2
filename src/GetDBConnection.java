@@ -5,7 +5,7 @@ public class GetDBConnection {
     public static Connection connectDB(String DBName, String id, String p) {
         Connection con = null;
         String uri = "jdbc:mysql://localhost:3306/" + DBName
-                + "?useSSL=false&characterEncoding=utf-8&allowPublicKeyRetrieval=true";
+                + "?useSSL=false&characterEncoding=utf-8&allowPublicKeyRetrieval=true&serverTimezone=UTC";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");// 加载JDBC-MySQL驱动
         } catch (Exception e) {
