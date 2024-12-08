@@ -1,11 +1,5 @@
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-
-import java.awt.Color;
+import javax.swing.JPanel;
 
 public class TSIv2 {
     public static void main(String[] args) {
@@ -15,7 +9,8 @@ public class TSIv2 {
 
         // 这里进行读取数据库，看是以玩家还是以用户的身份登入
         // 数据库以什么身份登入也是一个要点
-        InterfaceExecution InterfaceExecution = new InterfaceExecution();
+        InterfaceExecution interfaceExecution = new InterfaceExecution();
+        interfaceExecution.init();
 
     }
 
@@ -25,52 +20,65 @@ class InterfaceExecution {
 
     CardLayout cardLayout;
     MyJFrame myJFrame;
+    LaunchPage launchPage;
+    StoryPage storyPage;
+    ChapterPage chapterPage;
+    PlotPage plotPage;
+    AchievementPage achievementPage;
+    MyStyle myStyle = new MyStyle();
 
-    void InterruptedException() {
+    public enum ToggleState {
+        Launch,
+        Story,
+        Chapter,
+        Plot,
+        Achievement
+    }
+    // ToggleState currentState = ToggleState.LA;
+
+    InterfaceExecution() {
 
         cardLayout = new CardLayout();
-        myJFrame = new MyJFrame(this, "TSIv2");
+        myJFrame = new MyJFrame("TSIv2");
+        myJFrame.setJMenuBar(myJFrame.setMenu(3));
+        myJFrame.addJMenuListener();
+
+        launchPage = new LaunchPage();
+
+        storyPage = new StoryPage();
+        chapterPage = new ChapterPage();
+        plotPage = new PlotPage();
+
+    }
+
+    void init() {
 
     }
 
 }
 
-class MyJFrame extends JFrame {
+class LaunchPage extends JPanel {
 
-    InterfaceExecution IE;
-    JMenuBar myJMenuBar;
-    JMenu myJMenu;
+    StarrySkyPanel starrySkyPanel;
 
-    MyJFrame(InterfaceExecution interfaceExecution, String frameName) {
-        IE = interfaceExecution;
+}
 
-        setTitle(frameName);
-        setSize(1600, 900);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBackground(Color.BLACK);
-        this.getContentPane().setBackground(Color.BLACK);
-        setLayout(new BorderLayout());
-        this.setResizable(false);
+class StoryPage extends JPanel {
 
-        setVisible(true);
-    }
+    StarrySkyPanel starrySkyPanel;
 
-    MyJFrame(InterfaceExecution interfaceExecution, String frameName, int menuItemNumber) {
-        IE = interfaceExecution;
-        setTitle(frameName);
-        setSize(1600, 900);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBackground(Color.BLACK);
-        setLayout(new BorderLayout());
-        this.setResizable(false);
+}
 
-        setVisible(true);
-    }
+class ChapterPage extends JPanel {
 
-    void initMenu() {
+    StarrySkyPanel starrySkyPanel;
 
-    }
+}
+
+class PlotPage extends JPanel {
+
+}
+
+class AchievementPage extends JPanel {
 
 }
