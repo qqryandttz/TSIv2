@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+//分辨率调节，不过大概用不到了
 public class ResolutionChanger {
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("分辨率调节");
