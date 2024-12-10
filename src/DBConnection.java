@@ -1,6 +1,14 @@
 import java.sql.*;
 
-//数据库连接相关代码
+class MyDB {
+
+    MyDB() {
+
+    }
+
+}
+
+// 数据库连接相关代码
 
 public class DBConnection {
     public static Connection connectDB(String DBName, String user, String password) {
@@ -12,7 +20,8 @@ public class DBConnection {
         }
 
         Connection con = null;
-        String url = "jdbc:mysql://localhost:3306/" + DBName
+        // String url = "jdbc:mysql://localhost:3306/" + DBName
+        String url = "jdbc:mysql://47.98.243.58:3306/" + DBName
                 + "?useSSL=false&characterEncoding=utf-8&allowPublicKeyRetrieval=true&serverTimezone=UTC";
         try {
             con = DriverManager.getConnection(url, user, password);
@@ -36,7 +45,7 @@ public class DBConnection {
 class zixin {
     public static void main(String[] args) {
         DBConnection dbc = new DBConnection();
-        dbc.connectDB("teaching", "root", "61");
+        dbc.connectDB("TSI2", "qqry", "61");
     }
 }
 

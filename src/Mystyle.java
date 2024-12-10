@@ -24,12 +24,9 @@ class MyStyle {
         return menuFont;
     }
 
-    public MyMusic getBackgroundMyMusic(String musicState, String path) {
-        backgroundMyMusic = new MyMusic(musicState, path);
-        return backgroundMyMusic;
-    }
+    void playBackgroundMyMusic(String path) {
 
-    void startBackgroundMyMusic() {
+        backgroundMyMusic = new MyMusic(path);
 
     }
 
@@ -37,23 +34,22 @@ class MyStyle {
 
 class MyMusic {
 
-    static Boolean musicStatic = true;
-    String musicState;
+    static Boolean musicState = true;
     String path;
     MusicOnceThread musicOnceThread;
     MusicLoopThread musicLoopThread;
 
-    MyMusic(String musicState, String path) {
-        this.musicState = musicState;
+    MyMusic(String path) {
+
         this.path = path;
     }
 
     public static Boolean getMusicStatic() {
-        return musicStatic;
+        return musicState;
     }
 
-    public static void setMusicStatic(Boolean musicStatic) {
-        MyMusic.musicStatic = musicStatic;
+    public static void setMusicStatic(Boolean musicState) {
+        MyMusic.musicState = musicState;
     }
 
     void playMusicOnc() {
@@ -64,13 +60,17 @@ class MyMusic {
 
     }
 
+    void stopMusic() {
+        musicState = false;
+    }
+
 }
 
 class MusicOnceThread extends Thread {
 
     String path;
     AdvancedPlayer musicPlayer;
-    int musicStatic = 100;
+    Boolean musicState;
 
     MusicOnceThread(String path, MyMusic music) {
         try {
@@ -82,7 +82,7 @@ class MusicOnceThread extends Thread {
 
     @Override
     public void run() {
-        if (musicStatic == 0)
+        if (musicState)
             // break;
             synchronized (MusicOnceThread.class) {
 

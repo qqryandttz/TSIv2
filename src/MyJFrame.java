@@ -83,3 +83,7 @@ class MyJFrame extends JFrame {
 
     }
 }
+
+class PopupManager {
+
+}
