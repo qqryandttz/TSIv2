@@ -34,6 +34,10 @@ public class MyMusic {
         musicState = false;
     }
 
+    void startMusic() {
+        musicState = true;
+    }
+
     void playMusicOnce(String path) {
 
         if (musicState) {

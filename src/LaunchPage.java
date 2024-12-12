@@ -1,19 +1,16 @@
 import javax.swing.border.LineBorder;
 import java.awt.BorderLayout;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class LaunchPage extends JPanel {
 
     InterfaceExecution IE;
-    MyStyle myStyle = new MyStyle();
     JLayeredPane layeredPane;
     StarrySkyPanel starrySkyPanel;
 
@@ -45,15 +42,15 @@ public class LaunchPage extends JPanel {
 
         title = new JLabel("The Slumber Interval");
         layeredPane.add(title, new Integer(JLayeredPane.DEFAULT_LAYER + 10));
-        title.setFont(myStyle.getTitleFont());
-        title.setForeground(myStyle.getTitleColor());
+        title.setFont(MyStyle.getTitleFont());
+        title.setForeground(MyStyle.getTitleColor());
         title.setBounds(155, 75, 1500, 225);
 
         subTitle = new JLabel(
                 "<html> I hope your dreams are filled with candies and laughter. When you wake up, maybe we can go explore the wider world together.</html>");
         layeredPane.add(subTitle, new Integer(JLayeredPane.DEFAULT_LAYER + 10));
-        subTitle.setFont(myStyle.getSubTitleFont());
-        subTitle.setForeground(myStyle.getSubTitleColor());
+        subTitle.setFont(MyStyle.getSubTitleFont());
+        subTitle.setForeground(MyStyle.getSubTitleColor());
         subTitle.setBounds(355, 322, 787, 187);
 
     }
@@ -64,21 +61,20 @@ public class LaunchPage extends JPanel {
         layeredPane.add(startBotton, new Integer(JLayeredPane.DEFAULT_LAYER + 10));
         startBotton.setBorderPainted(false);
 
-        LineBorder lineBorder = new LineBorder(myStyle.getTitleColor(), 2);
+        LineBorder lineBorder = new LineBorder(MyStyle.getTitleColor(), 2);
         startBotton.setBorder(lineBorder);
-        startBotton.setFont(myStyle.getBottonFont());
-        startBotton.setBackground(myStyle.getBottonColor());
-        startBotton.setForeground(myStyle.getBottonFontColor());
-        startBotton.setBounds(630, 600, 300, 75);
+        startBotton.setFont(MyStyle.getBottonFont());
+        startBotton.setBackground(MyStyle.getBottonColor());
+        startBotton.setForeground(MyStyle.getBottonFontColor());
+        startBotton.setBounds(630, 610, 300, 75);
 
         startBotton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                myStyle.playPressButtonSound();
-                // 点击后出现进度条
-                JOptionPane.showMessageDialog(new Frame(), "<html><font face='黑体' size='5'>已为您打开文件!</font></html>",
-                        "提示", JOptionPane.INFORMATION_MESSAGE);
+                MyStyle.playPressButtonSound();
+                startBotton.setVisible(false);
+                AddProcessBar();
             }
         });
 
@@ -87,21 +83,32 @@ public class LaunchPage extends JPanel {
             @Override
             public void mouseEntered(MouseEvent e) {
 
-                myStyle.playTouchButtonSound();
-                startBotton.setForeground(myStyle.getBottonFontActiveColor());
-                startBotton.setFont(myStyle.getBottonActiveFont());
+                MyStyle.playTouchButtonSound();
+                startBotton.setForeground(MyStyle.getBottonFontActiveColor());
+                startBotton.setFont(MyStyle.getBottonActiveFont());
                 startBotton.setBounds(650, 612, 270, 70);
                 startBotton.setBorderPainted(true);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                startBotton.setFont(myStyle.getBottonFont());
-                startBotton.setForeground(myStyle.getBottonFontColor());
+                startBotton.setFont(MyStyle.getBottonFont());
+                startBotton.setForeground(MyStyle.getBottonFontColor());
                 startBotton.setBounds(630, 610, 300, 75);
                 startBotton.setBorderPainted(false);
             }
         });
+
+    }
+
+    void AddProcessBar() {
+
+        MyProgressBar progressBar = new MyProgressBar(0, 100);
+        progressBar.setValue(10);
+        progressBar.setStringPainted(true);
+
+        layeredPane.add(progressBar, new Integer(JLayeredPane.DEFAULT_LAYER + 10));
+        progressBar.setBounds(330, 662, 900, 30);
 
     }
 

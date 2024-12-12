@@ -1,7 +1,3 @@
-import java.io.FileInputStream;
-import javazoom.jl.player.advanced.AdvancedPlayer;
-import javazoom.jl.player.advanced.PlaybackEvent;
-import javazoom.jl.player.advanced.PlaybackListener;
 import java.awt.Color;
 import java.awt.Font;
 
@@ -22,80 +18,84 @@ class MyStyle {
     static Color bottonFontActiveColor = new Color(0x66, 0xfa, 0xf1);
     static Font bottonActiveFont = new Font("黑体", Font.PLAIN, 27);
 
-    public Color getBottonFontActiveColor() {
+    static public Color getBottonFontActiveColor() {
         return bottonFontActiveColor;
     }
 
-    public Font getBottonActiveFont() {
+    static public Font getBottonActiveFont() {
         return bottonActiveFont;
     }
 
-    public Color getTitleColor() {
+    static public Color getTitleColor() {
         return titleColor;
     }
 
-    public Color getSubTitleColor() {
+    static public Color getSubTitleColor() {
         return subTitleColor;
     }
 
-    public Font getTitleFont() {
+    static public Font getTitleFont() {
         return titleFont;
     }
 
-    public Font getSubTitleFont() {
+    static public Font getSubTitleFont() {
         return subTitleFont;
     }
 
-    public Color getBottonColor() {
+    static public Color getBottonColor() {
         return bottonColor;
     }
 
-    public Color getBottonFontColor() {
+    static public Color getBottonFontColor() {
         return bottonFontColor;
     }
 
-    public Font getBottonFont() {
+    static public Font getBottonFont() {
         return bottonFont;
     }
 
     static Color menuColor = new Color(0x00, 0x14, 0x2f);
     static Font menuFont = new Font("黑体", Font.BOLD, 22);
 
-    public Color getMenuColor() {
+    static public Color getMenuColor() {
         return menuColor;
     }
 
-    public Font getMenuFont() {
+    static public Font getMenuFont() {
         return menuFont;
     }
 
     // 这里可以播放启动背景音乐和故事背景音乐，
     // 还要有按钮等一些音效
 
-    MyMusic myMusic = new MyMusic();;
-    String bgMusic = ".\\res\\TSIv2\\TSIv2.mp3";
-    String touchButtonSound = ".\\res\\TSIv2\\touchButtonSound.MP3";
-    String pressButtonSound = ".\\res\\TSIv2\\pressButtonSound.MP3";
-    String storyBgMusic = ".\\res\\" + "story" + ".mp3";
+    static public MyMusic myMusic = new MyMusic();;
+    static public String bgMusic = ".\\res\\TSIv2\\TSIv2.mp3";
+    static public String touchButtonSound = ".\\res\\TSIv2\\touchButtonSound.MP3";
+    static public String pressButtonSound = ".\\res\\TSIv2\\pressButtonSound.MP3";
+    static public String storyBgMusic = ".\\res\\" + "story" + ".mp3";
 
-    void playBgMusic() {
+    static public void playBgMusic() {
         myMusic.playMusicLoop(bgMusic);
     }
 
-    void playTouchButtonSound() {
+    static public void playTouchButtonSound() {
         myMusic.playMusicOnce(touchButtonSound);
     }
 
-    void playPressButtonSound() {
+    static public void playPressButtonSound() {
         myMusic.playMusicOnce(pressButtonSound);
     }
 
-    void playStoryBgMusic(int storyNumber) {
+    static public void playStoryBgMusic(int storyNumber) {
         myMusic.playMusicLoop(".\\res\\story" + storyNumber + ".mp3");
     }
 
-    void stopMusic() {
+    static public void stopMusic() {
         myMusic.stopMusic();
+    }
+
+    static public void startMusic() {
+        myMusic.startMusic();
     }
 
 }

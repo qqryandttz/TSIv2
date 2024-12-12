@@ -9,19 +9,10 @@ public class TSIv2 {
         // DBConnection dbConnection = new DBConnection();
         // dbConnection.connectDB("teaching", "root", "61");
 
-        // 这里进行读取数据库，看是以玩家还是以用户的身份登入
-        // 数据库以什么身份登入也是一个要点
         InterfaceExecution interfaceExecution = new InterfaceExecution();
-        try {
-            MyStyle myStyle = new MyStyle();
-            Thread.sleep(10000);
-            myStyle.stopMusic();
+        MyStyle.stopMusic();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
-
 }
 
 /**
@@ -36,11 +27,11 @@ class InterfaceExecution {
     ChapterPage chapterPage;
     PlotPage plotPage;
     AchievementPage achievementPage;
-    MyStyle myStyle = new MyStyle();
     Container myJFrameContentPane;
 
     Boolean isDBexist;
     Boolean isDBchanged;
+    int isToggle;
 
     public static enum ToggleState {
         Launch,
@@ -73,7 +64,7 @@ class InterfaceExecution {
         myJFrameContentPane.add("launch", launchPage);
         cardLayout.show(myJFrameContentPane, "launch");
 
-        myStyle.playBgMusic();
+        MyStyle.playBgMusic();
     }
 
     void DBconnect() {
