@@ -18,8 +18,17 @@ class MyStyle {
     static Color bottonColor = new Color(0x01, 0x42, 0x54);
     static Color bottonFontColor = new Color(0x1a, 0xbc, 0xbd);
     static Font bottonFont = new Font("黑体", Font.BOLD, 30);
+
     static Color bottonFontActiveColor = new Color(0x66, 0xfa, 0xf1);
     static Font bottonActiveFont = new Font("黑体", Font.PLAIN, 27);
+
+    public Color getBottonFontActiveColor() {
+        return bottonFontActiveColor;
+    }
+
+    public Font getBottonActiveFont() {
+        return bottonActiveFont;
+    }
 
     public Color getTitleColor() {
         return titleColor;
@@ -60,88 +69,33 @@ class MyStyle {
         return menuFont;
     }
 
-    MyMusic backgroundMyMusic;
+    // 这里可以播放启动背景音乐和故事背景音乐，
+    // 还要有按钮等一些音效
 
-    void playBackgroundMyMusic(String path) {
+    MyMusic myMusic = new MyMusic();;
+    String bgMusic = ".\\res\\TSIv2\\TSIv2.mp3";
+    String touchButtonSound = ".\\res\\TSIv2\\touchButtonSound.MP3";
+    String pressButtonSound = ".\\res\\TSIv2\\pressButtonSound.MP3";
+    String storyBgMusic = ".\\res\\" + "story" + ".mp3";
 
-        backgroundMyMusic = new MyMusic(path);
-
+    void playBgMusic() {
+        myMusic.playMusicLoop(bgMusic);
     }
 
-}
-
-class MyMusic {
-
-    static Boolean musicState = true;
-    String path;
-    MusicOnceThread musicOnceThread;
-    MusicLoopThread musicLoopThread;
-
-    MyMusic(String path) {
-
-        this.path = path;
+    void playTouchButtonSound() {
+        myMusic.playMusicOnce(touchButtonSound);
     }
 
-    public static Boolean getMusicStatic() {
-        return musicState;
+    void playPressButtonSound() {
+        myMusic.playMusicOnce(pressButtonSound);
     }
 
-    public static void setMusicStatic(Boolean musicState) {
-        MyMusic.musicState = musicState;
-    }
-
-    void playMusicOnc() {
-        musicOnceThread = new MusicOnceThread(path, this);
-    }
-
-    void playMusicLoop() {
-
+    void playStoryBgMusic(int storyNumber) {
+        myMusic.playMusicLoop(".\\res\\story" + storyNumber + ".mp3");
     }
 
     void stopMusic() {
-        musicState = false;
-    }
-
-}
-
-class MusicOnceThread extends Thread {
-
-    String path;
-    AdvancedPlayer musicPlayer;
-    Boolean musicState;
-
-    MusicOnceThread(String path, MyMusic music) {
-        try {
-            musicPlayer = new AdvancedPlayer(new FileInputStream(path));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void run() {
-        if (musicState)
-            // break;
-            synchronized (MusicOnceThread.class) {
-
-                try {
-                    musicPlayer.play();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-    }
-}
-
-class MusicLoopThread {
-
-    String path;
-    AdvancedPlayer musicPlayer;
-
-    MusicLoopThread(String path, MyMusic myMusic) {
-        this.path = path;
-
+        myMusic.stopMusic();
     }
 
 }

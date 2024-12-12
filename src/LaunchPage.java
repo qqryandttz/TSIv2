@@ -1,7 +1,14 @@
-import javax.swing.*;
 import javax.swing.border.LineBorder;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public class LaunchPage extends JPanel {
 
@@ -54,17 +61,48 @@ public class LaunchPage extends JPanel {
     void AddStartBotton() {
 
         startBotton = new roundedButton("START", 30);
+        layeredPane.add(startBotton, new Integer(JLayeredPane.DEFAULT_LAYER + 10));
         startBotton.setBorderPainted(false);
+
         LineBorder lineBorder = new LineBorder(myStyle.getTitleColor(), 2);
         startBotton.setBorder(lineBorder);
-
-        layeredPane.add(startBotton);
         startBotton.setFont(myStyle.getBottonFont());
         startBotton.setBackground(myStyle.getBottonColor());
         startBotton.setForeground(myStyle.getBottonFontColor());
+        startBotton.setBounds(630, 600, 300, 75);
 
-        layeredPane.add(startBotton, new Integer(JLayeredPane.DEFAULT_LAYER + 1));
-        startBotton.setBounds(638, 675, 300, 75);
+        startBotton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                myStyle.playPressButtonSound();
+                // 点击后出现进度条
+                JOptionPane.showMessageDialog(new Frame(), "<html><font face='黑体' size='5'>已为您打开文件!</font></html>",
+                        "提示", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        startBotton.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+                myStyle.playTouchButtonSound();
+                startBotton.setForeground(myStyle.getBottonFontActiveColor());
+                startBotton.setFont(myStyle.getBottonActiveFont());
+                startBotton.setBounds(650, 612, 270, 70);
+                startBotton.setBorderPainted(true);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                startBotton.setFont(myStyle.getBottonFont());
+                startBotton.setForeground(myStyle.getBottonFontColor());
+                startBotton.setBounds(630, 610, 300, 75);
+                startBotton.setBorderPainted(false);
+            }
+        });
+
     }
 
 }

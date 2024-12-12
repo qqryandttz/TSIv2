@@ -12,7 +12,14 @@ public class TSIv2 {
         // 这里进行读取数据库，看是以玩家还是以用户的身份登入
         // 数据库以什么身份登入也是一个要点
         InterfaceExecution interfaceExecution = new InterfaceExecution();
+        try {
+            MyStyle myStyle = new MyStyle();
+            Thread.sleep(10000);
+            myStyle.stopMusic();
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
@@ -66,7 +73,7 @@ class InterfaceExecution {
         myJFrameContentPane.add("launch", launchPage);
         cardLayout.show(myJFrameContentPane, "launch");
 
-        myStyle.playBackgroundMyMusic("背景音乐路径");
+        myStyle.playBgMusic();
     }
 
     void DBconnect() {
