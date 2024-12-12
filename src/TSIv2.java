@@ -1,5 +1,5 @@
 import java.awt.CardLayout;
-import java.text.ListFormat.Style;
+import java.awt.Container;
 
 import javax.swing.JPanel;
 
@@ -30,6 +30,7 @@ class InterfaceExecution {
     PlotPage plotPage;
     AchievementPage achievementPage;
     MyStyle myStyle = new MyStyle();
+    Container myJFrameContentPane;
 
     Boolean isDBexist;
     Boolean isDBchanged;
@@ -46,19 +47,25 @@ class InterfaceExecution {
     InterfaceExecution() {
 
         this.initLoading();
-        this.DBconnect();
+        // this.DBconnect();
 
         this.loadAllPages();
     }
 
     void initLoading() {
 
-        cardLayout = new CardLayout();
         myJFrame = new MyJFrame("TSIv2");
         myJFrame.setJMenuBar(myJFrame.setMenu(3));
         myJFrame.addJMenuListener();
 
-        launchPage = new LaunchPage();
+        cardLayout = new CardLayout();
+        myJFrameContentPane = myJFrame.getContentPane();
+        myJFrameContentPane.setLayout(cardLayout);
+
+        launchPage = new LaunchPage(this);
+        myJFrameContentPane.add("launch", launchPage);
+        cardLayout.show(myJFrameContentPane, "launch");
+
         myStyle.playBackgroundMyMusic("背景音乐路径");
     }
 
@@ -120,12 +127,6 @@ class InterfaceExecution {
         plotPage = new PlotPage();
 
     }
-
-}
-
-class LaunchPage extends JPanel {
-
-    StarrySkyPanel starrySkyPanel;
 
 }
 

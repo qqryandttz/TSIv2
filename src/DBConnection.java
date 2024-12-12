@@ -12,12 +12,12 @@ class MyDB {
 
 public class DBConnection {
     public static Connection connectDB(String DBName, String user, String password) {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("成功加载JDBC-MySQL驱动");
-        } catch (Exception e) {
-            System.out.println("无法加载JDBC-MySQL驱动");
-        }
+        // try {
+        // Class.forName("com.mysql.cj.jdbc.Driver");
+        // System.out.println("成功加载JDBC-MySQL驱动");
+        // } catch (Exception e) {
+        // System.out.println("无法加载JDBC-MySQL驱动");
+        // }
 
         Connection con = null;
         // String url = "jdbc:mysql://localhost:3306/" + DBName
@@ -37,9 +37,7 @@ public class DBConnection {
             System.out.println("发生错误！");
         }
         return con;
-
     }
-
 }
 
 class zixin {
@@ -49,53 +47,61 @@ class zixin {
     }
 }
 
-class DBD {
+class TransactionExample {
+    public static void main(String[] args) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
 
-    public static void main(String args[]) {
-        Connection con;
-        Statement sql;
-        ResultSet rs;
-        con = GetDBConnection.connectDB("teaching", "root", "61");
-        if (con == null)
-            return;
-        String sqlStr = "select * from mess order by birthday";
         try {
-            sql = con.createStatement();
-            rs = sql.executeQuery(sqlStr);
-            while (rs.next()) {
-                String number = rs.getString(1);
-                String name = rs.getString(2);
-                Date date = rs.getDate(3);
-                float height = rs.getFloat(4);
-                System.out.printf("%s\t", number);
-                System.out.printf("%s\t", name);
-                System.out.printf("%s\t", date);
-                System.out.printf("%.2f\n", height);
+            // 1. 获取数据库连接
+            connection = DriverManager.getConnection("jdbc:your_database_url", "username", "password");
+
+            // 2. 禁用自动提交
+            connection.setAutoCommit(false);
+
+            // 3. 创建 PreparedStatement
+            String sql = "INSERT INTO your_table (column1, column2) VALUES (?, ?)";
+            preparedStatement = connection.prepareStatement(sql);
+
+            // 设置参数并执行
+            preparedStatement.setString(1, "value1");
+            preparedStatement.setInt(2, 123);
+            preparedStatement.executeUpdate();
+
+            // 假设有另一个操作
+            sql = "UPDATE your_table SET column2 = ? WHERE column1 = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, 456);
+            preparedStatement.setString(2, "value1");
+            preparedStatement.executeUpdate();
+
+            // 4. 提交事务
+            connection.commit();
+            System.out.println("Transaction committed successfully.");
+
+        } catch (SQLException e) {
+            // 5. 捕获异常并回滚事务
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    System.out.println("Transaction rolled back due to an error.");
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
+                }
             }
-            con.close();
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-    }
-}
-
-class GetDBConnection {
-
-    public static Connection connectDB(String DBName, String id, String p) {
-        Connection con = null;
-        String uri = "jdbc:mysql://localhost:3306/" + DBName
-                + "?useSSL=false&characterEncoding=utf-8&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");// 加载JDBC-MySQL驱动
-        } catch (Exception e) {
-            System.out.println("加载失败！");
-        }
-        try {
-            con = DriverManager.getConnection(uri, id, p); // 连接代码
-        } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("链接失败！");
+        } finally {
+            // 6. 关闭资源
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException closeEx) {
+                closeEx.printStackTrace();
+            }
         }
-        return con;
     }
 }
