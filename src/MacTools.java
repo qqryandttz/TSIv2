@@ -4,6 +4,9 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 获取主机的mac地址
+ */
 public class MacTools {
     public static List<String> getActiveMacList() throws SocketException {
         Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();

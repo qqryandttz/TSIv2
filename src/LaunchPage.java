@@ -8,14 +8,19 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+/**
+ * 启动页面，数据库逻辑执行
+ */
 public class LaunchPage extends JPanel {
 
     InterfaceExecution IE;
     JLayeredPane layeredPane;
     StarrySkyPanel starrySkyPanel;
-
     JLabel title, subTitle;
     roundedButton startBotton;
+
+    MyProgressBar progressBar;
+    MyLoginPage myLoginPage;
 
     LaunchPage(InterfaceExecution interfaceExecution) {
 
@@ -75,6 +80,9 @@ public class LaunchPage extends JPanel {
                 MyStyle.playPressButtonSound();
                 startBotton.setVisible(false);
                 AddProcessBar();
+                progressBar.smoothProgressTo(15);
+                myLoginPage = new MyLoginPage("登入页面", IE);
+
             }
         });
 
@@ -103,13 +111,17 @@ public class LaunchPage extends JPanel {
 
     void AddProcessBar() {
 
-        MyProgressBar progressBar = new MyProgressBar(0, 100);
-        progressBar.setValue(10);
+        progressBar = new MyProgressBar(0, 100);
         progressBar.setStringPainted(true);
 
         layeredPane.add(progressBar, new Integer(JLayeredPane.DEFAULT_LAYER + 10));
         progressBar.setBounds(330, 662, 900, 30);
 
+    }
+
+    void revertLogin() {
+        progressBar.setVisible(false);
+        startBotton.setVisible(true);
     }
 
 }

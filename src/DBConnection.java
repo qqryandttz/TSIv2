@@ -1,14 +1,6 @@
 import java.sql.*;
 
-class MyDB {
-
-    MyDB() {
-
-    }
-
-}
-
-// 数据库连接相关代码
+// 数据库连接参考代码
 
 public class DBConnection {
     public static Connection connectDB(String DBName, String user, String password) {

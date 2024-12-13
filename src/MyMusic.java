@@ -6,25 +6,28 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
 import javazoom.jl.player.advanced.PlaybackListener;
 
+/*
+ * 音乐播放,可以循环或单次播放,支持暂停
+ */
 public class MyMusic {
 
     static Boolean musicState = true;
     MusicThread musicOnceThread;
     MusicThread musicLoopThread;
 
-    public static void main(String[] args) {
+    // public static void main(String[] args) {
 
-        try {
-            MyStyle myStyle = new MyStyle();
-            myStyle.playBgMusic();
-            Thread.sleep(3000);
-            myStyle.stopMusic();
+    // try {
+    // MyStyle myStyle = new MyStyle();
+    // myStyle.playBgMusic();
+    // Thread.sleep(3000);
+    // myStyle.stopMusic();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // }
 
-    }
+    // }
 
     Boolean getMusicStatic() {
         return musicState;

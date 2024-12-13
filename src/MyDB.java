@@ -1,26 +1,25 @@
 import java.sql.*;
 
-public class MyDB {
+/**
+ * 数据库连接
+ */
+class MyDB {
 
-    final static String DBName = "TSI2";
-    final static String user = "qqry";
+    final static String DBName = "TSIv2";
+    final static String user = "root";
     final static String password = "61";
-    PreparedStatement pstmt = null;
-    Connection con;
+    static Connection con;
 
-    public Connection getCon() {
-        return con;
-    }
+    PreparedStatement pstmt = null;
 
     public static void main(String[] args) {
-        // 测试专用
-
+        // 测试load方法
         MyDB myDB = new MyDB();
-        // myDB.DBConnection();
-        // myDB.isDBqqry();
+        Boolean result = myDB.load("qqry", "qqry");
+        System.out.println("登录验证结果: " + result);
     }
 
-    void DBConnection() {
+    MyDB() {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -29,19 +28,23 @@ public class MyDB {
             System.out.println("无法加载JDBC-MySQL驱动");
         }
 
-        Connection con = null;
+        con = null;
         String url = "jdbc:mysql://localhost:3306/" + DBName
         // String url = "jdbc:mysql://47.98.243.58:3306/" + DBName
                 + "?useSSL=false&characterEncoding=utf-8&allowPublicKeyRetrieval=true&serverTimezone=UTC";
         try {
             con = DriverManager.getConnection(url, user, password);
-            if (!con.isClosed())
+            if (con != null && !con.isClosed())
                 System.out.println("成功连接数据库");
 
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("发生错误！");
         }
+    }
+
+    public Connection getCon() {
+        return con;
     }
 
     void creatTable(Connection con, String tableName) {
@@ -94,6 +97,35 @@ public class MyDB {
 
         }
 
+    }
+
+    // 验证登录信息的方法
+    public Boolean load(String login, String pwd) {
+        Boolean isValid = false;
+
+        try {
+            // if (con != null && !con.isClosed()) {
+            System.out.println("有进来吗？");
+            String query = "SELECT * FROM 用户表 WHERE 用户名 = ? AND 密码 = ?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setString(1, login);
+            pstmt.setString(2, pwd);
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                isValid = true;
+            }
+
+            rs.close();
+            pstmt.close();
+            // }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            //stopDB();
+        }
+
+        return isValid;
     }
 
     void stopDB() {

@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
+/**
+ * 借用的星空面板
+ */
 public class StarrySkyPanel extends JPanel {
 
     private static final int panel_w = 1600;
@@ -15,7 +18,7 @@ public class StarrySkyPanel extends JPanel {
 
     public StarrySkyPanel() {
         setPreferredSize(new Dimension(panel_w, panel_H));
-        setBackground(new Color(0x0b, 0x0c, 0x10));
+        setBackground(MyStyle.getStarrySkyBackgroundColor());
 
         InitStar();
         new Timer(10, e -> {

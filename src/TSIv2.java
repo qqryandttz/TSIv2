@@ -3,25 +3,26 @@ import java.awt.Container;
 
 import javax.swing.JPanel;
 
+/**
+ * 主程序执行
+ */
 public class TSIv2 {
     public static void main(String[] args) {
 
-        // DBConnection dbConnection = new DBConnection();
-        // dbConnection.connectDB("teaching", "root", "61");
-
         InterfaceExecution interfaceExecution = new InterfaceExecution();
-        MyStyle.stopMusic();
+        // MyStyle.stopMusic();
 
     }
 }
 
 /**
- * 总体执行逻辑，and 数据库连接
+ * 主执行逻辑，创建各个页面
  */
 class InterfaceExecution {
 
     CardLayout cardLayout;
     MyJFrame myJFrame;
+    JPanel glassPane;
     LaunchPage launchPage;
     StoryPage storyPage;
     ChapterPage chapterPage;
@@ -45,16 +46,18 @@ class InterfaceExecution {
     InterfaceExecution() {
 
         this.initLoading();
-        // this.DBconnect();
 
         this.loadAllPages();
     }
 
     void initLoading() {
 
-        myJFrame = new MyJFrame("TSIv2");
+        myJFrame = new MyJFrame("TSIv2", 1600, 900);
         myJFrame.setJMenuBar(myJFrame.setMenu(3));
         myJFrame.addJMenuListener();
+
+        glassPane = (JPanel) myJFrame.getGlassPane();
+        myJFrame.add(glassPane);
 
         cardLayout = new CardLayout();
         myJFrameContentPane = myJFrame.getContentPane();
@@ -65,6 +68,14 @@ class InterfaceExecution {
         cardLayout.show(myJFrameContentPane, "launch");
 
         MyStyle.playBgMusic();
+    }
+
+    /**
+     * 用户退出登录界面时，恢复初始状态
+     */
+    void revertLogin() {
+        launchPage.revertLogin();
+
     }
 
     void DBconnect() {

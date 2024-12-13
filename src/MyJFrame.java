@@ -6,6 +6,9 @@ import javax.swing.JMenuItem;
 
 import java.awt.Color;
 
+/**
+ * 创建窗口
+ */
 class MyJFrame extends JFrame {
 
     JMenuBar myJMenuBar;
@@ -13,10 +16,10 @@ class MyJFrame extends JFrame {
     JMenuItem myJMenuItem[][];
     MyStyle myStyle = new MyStyle();
 
-    MyJFrame(String frameName) {
+    MyJFrame(String frameName, int width, int height) {
 
         setTitle(frameName);
-        setSize(1600, 900);
+        setSize(width, height);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(Color.BLACK);
@@ -45,7 +48,7 @@ class MyJFrame extends JFrame {
         myJMenuItem[0] = new JMenuItem[] {
                 new JMenuItem("音量"),
                 new JMenuItem("文本速度"),
-                new JMenuItem("用户")
+                new JMenuItem("切换用户")
         };
 
         myJMenuItem[1] = new JMenuItem[] {
@@ -82,8 +85,5 @@ class MyJFrame extends JFrame {
     void addJMenuListener() {
 
     }
-}
-
-class PopupManager {
 
 }

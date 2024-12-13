@@ -4,8 +4,6 @@ import java.util.TimerTask;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-//窗口自动关闭，做成绩系统可能有用
-
 /**
  * 第一次做GUI项目，有一个功能是要检查计算机信息，如果出现异常信息
  * 会自动弹出窗口，显示警告，用户可以主动去关闭，如果用户没有主动关闭窗口，该窗口30秒后自动关闭。

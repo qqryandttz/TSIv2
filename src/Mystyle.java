@@ -2,9 +2,15 @@ import java.awt.Color;
 import java.awt.Font;
 
 /**
- * 在这里可以设置一些样式的参数，比如背景音乐、图片、菜单颜色、文字的字体等等
+ * 存放着一些基础的样式，基础音乐、颜色、字体等等
  */
 class MyStyle {
+
+    static Color StarrySkyBackgroundColor = new Color(0x0b, 0x0c, 0x10);
+
+    public static Color getStarrySkyBackgroundColor() {
+        return StarrySkyBackgroundColor;
+    }
 
     static Color titleColor = new Color(0x66, 0xfa, 0xf1);
     static Color subTitleColor = new Color(0xc5, 0xc6, 0xc7);

@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
+/**
+ * 圆角按钮
+ */
 class roundedButton extends JButton {
 
     private int rounded直径;
