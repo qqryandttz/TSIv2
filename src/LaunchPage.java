@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
+
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -81,7 +83,9 @@ public class LaunchPage extends JPanel {
                 startBotton.setVisible(false);
                 AddProcessBar();
                 progressBar.smoothProgressTo(15);
-                myLoginPage = new MyLoginPage("登入页面", IE);
+                if (!isAutoLoading()) {
+                    myLoginPage = new MyLoginPage("登入页面", IE);
+                }
             }
         });
 
@@ -121,6 +125,21 @@ public class LaunchPage extends JPanel {
     void revertLogin() {
         progressBar.setVisible(false);
         startBotton.setVisible(true);
+    }
+
+    /**
+     * 待处理。实现自动登入逻辑，需要在配置文件中存储字段，最近的登录用户
+     * 查找到用户名，再去看是否开启自动登录，如果开启，就获取mac地址，获取成功就自动登入
+     */
+    Boolean isAutoLoading() {
+        try {
+            List<String> macs = MacTools.getActiveMacList();
+            MyDB myDB = new MyDB();
+        } catch (Exception e) {
+
+        }
+        return true;
+
     }
 
 }

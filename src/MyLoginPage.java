@@ -69,8 +69,8 @@ public class MyLoginPage {
     void addLabel() {
 
         titleLabel = new JLabel("TSIv2");
-        titleLabel.setFont(new Font("黑体", Font.BOLD, 70));
-        titleLabel.setBounds(290, 38, 465, 67);
+        titleLabel.setFont(new Font("Consolas", Font.BOLD, 70));
+        titleLabel.setBounds(290, 38, 465, 70);
         titleLabel.setForeground(MyStyle.getTitleColor());
         loginContentPane.add(titleLabel);
 
@@ -91,7 +91,7 @@ public class MyLoginPage {
 
         // loginField = new JTextField("input your user name");
         loginField = new JTextField("qqry");
-        loginField.setFont(new Font("黑体", Font.BOLD, 24));
+        loginField.setFont(new Font("Consolas", Font.BOLD, 24));
         loginField.setForeground(MyStyle.getSubTitleColor());
         loginField.setBackground(new Color(36, 39, 43));
         loginField.setBorder(BorderFactory.createEmptyBorder());
@@ -99,7 +99,7 @@ public class MyLoginPage {
         loginContentPane.add(loginField);
 
         pwdField = new JPasswordField("qqry");
-        pwdField.setFont(new Font("黑体", Font.BOLD, 24));
+        pwdField.setFont(new Font("Consolas", Font.BOLD, 24));
         pwdField.setForeground(MyStyle.getSubTitleColor());
         pwdField.setBackground(new Color(36, 39, 43));
         pwdField.setBorder(BorderFactory.createEmptyBorder());
@@ -131,7 +131,7 @@ public class MyLoginPage {
         signButton.setBorder(lineBorder);
         signButton.setFont(MyStyle.getBottonFont());
         signButton.setBackground(MyStyle.getBottonColor());
-        signButton.setForeground(MyStyle.getTitleColor());
+        signButton.setForeground(MyStyle.getBottonFontColor());
         signButton.setBounds(153, 320, 165, 55);
         signButton.setBorderPainted(true);
 
@@ -153,7 +153,7 @@ public class MyLoginPage {
                     JOptionPane.showMessageDialog(null, message, "登录失败", JOptionPane.INFORMATION_MESSAGE);
 
                 } else {
-                    if (!myDB.findUser(username)) {
+                    if (MyDB.con != null && !myDB.findUser(username)) {
                         JOptionPane.showMessageDialog(null, "未找到该用户，请重新输入。", "登录失败",
                                 JOptionPane.INFORMATION_MESSAGE);
 
@@ -201,7 +201,7 @@ public class MyLoginPage {
             @Override
             public void mouseExited(MouseEvent e) {
                 signButton.setFont(MyStyle.getBottonFont());
-                signButton.setForeground(MyStyle.getTitleColor());
+                signButton.setForeground(MyStyle.getBottonFontColor());
                 signButton.setBounds(153, 320, 165, 55);
             }
         });

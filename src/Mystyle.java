@@ -14,8 +14,8 @@ class MyStyle {
 
     static Color titleColor = new Color(0x66, 0xfa, 0xf1);
     static Color subTitleColor = new Color(0xc5, 0xc6, 0xc7);
-    static Font titleFont = new Font("黑体", Font.ITALIC, 120);
-    static Font subTitleFont = new Font("黑体", Font.CENTER_BASELINE, 24);
+    static Font titleFont = new Font("Consolas", Font.ITALIC, 120);
+    static Font subTitleFont = new Font("Consolas", Font.CENTER_BASELINE, 24);
 
     static Color bottonColor = new Color(0x01, 0x42, 0x54);
     static Color bottonFontColor = new Color(0x1a, 0xbc, 0xbd);

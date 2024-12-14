@@ -1,5 +1,9 @@
 import java.sql.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.StringJoiner;
 
 import javax.swing.JOptionPane;
@@ -31,7 +35,7 @@ class MyDB {
         con = null;
         // String url = "jdbc:mysql://localhost:3306/" + DBName
         String url = "jdbc:mysql://47.98.243.58:3306/" + DBName
-                + "?useSSL=false&characterEncoding=utf-8&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+                + "?useSSL=false&characterEncoding=utf-8&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai";
         try {
             con = DriverManager.getConnection(url, user, password);
             if (con != null && !con.isClosed())
@@ -121,19 +125,30 @@ class MyDB {
     /**
      * 查询用户名密码是否正确
      */
-    Boolean load(String login, String pwd) {
+    Boolean load(String username, String pwd) {
         Boolean isValid = false;
+        String updateQuery = "UPDATE 用户表 SET 最后登入时间 = ? WHERE 用户名 = ?";
 
         try {
             if (con != null && !con.isClosed()) {
                 String query = "SELECT * FROM 用户表 WHERE 用户名 = ? AND 密码 = ?";
                 PreparedStatement pstmt = con.prepareStatement(query);
-                pstmt.setString(1, login);
+                pstmt.setString(1, username);
                 pstmt.setString(2, pwd);
 
                 ResultSet rs = pstmt.executeQuery();
                 if (rs.next()) {
                     isValid = true;
+                    PreparedStatement pstmtUpdate = con.prepareStatement(updateQuery);
+                    pstmtUpdate.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+
+                    pstmtUpdate.setString(2, username);
+
+                    int affectedRows = pstmtUpdate.executeUpdate();
+                    if (affectedRows == 0) {
+                        JOptionPane.showMessageDialog(null, "程序出错！无法更新最后登入时间！", "警告", JOptionPane.ERROR_MESSAGE);
+
+                    }
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "程序出错！未获取到数据库连接！", "警告", JOptionPane.ERROR_MESSAGE);
@@ -287,4 +302,41 @@ class MyDB {
         return isSuccess;
     }
 
+    /**
+     * 查找是否自动登入
+     */
+    public Boolean checkUserMacAddresses(String userName, List<String> macs) {
+        Boolean isMatch = false;
+        String retrievedMacAddressesString = null;
+
+        try {
+            if (con != null && !con.isClosed()) {
+                String selectQuery = "SELECT mac地址组 FROM 用户表 WHERE 用户名 = ?";
+                try (PreparedStatement pstmt = con.prepareStatement(selectQuery)) {
+                    pstmt.setString(1, userName);
+                    try (ResultSet rs = pstmt.executeQuery()) {
+                        if (rs.next()) {
+                            retrievedMacAddressesString = rs.getString("mac地址组");
+                        }
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "程序出错！未获取到数据库连接！", "警告", JOptionPane.ERROR_MESSAGE);
+            }
+
+            // 将从数据库检索到的MAC地址组字符串拆分为单个MAC地址，并与提供的列表进行比较
+            if (retrievedMacAddressesString != null && !retrievedMacAddressesString.isEmpty()) {
+                String[] retrievedMacsArray = retrievedMacAddressesString.split(",");
+                Set<String> retrievedMacsSet = new HashSet<>(Arrays.asList(retrievedMacsArray));
+                Set<String> providedMacsSet = new HashSet<>(macs);
+
+                // 检查是否有任何匹配的MAC地址
+                isMatch = !Collections.disjoint(retrievedMacsSet, providedMacsSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return isMatch;
+    }
 }

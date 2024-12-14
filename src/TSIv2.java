@@ -30,6 +30,8 @@ class InterfaceExecution {
     AchievementPage achievementPage;
     Container myJFrameContentPane;
 
+    OpenFile openFile = new OpenFile();
+
     Boolean isDBexist;
     Boolean isDBchanged;
     int isToggle;
@@ -55,6 +57,7 @@ class InterfaceExecution {
         myJFrame = new MyJFrame("TSIv2", 1600, 900);
         myJFrame.setJMenuBar(myJFrame.setMenu(3));
         myJFrame.addJMenuListener();
+        myJFrame.setIE(this);
 
         glassPane = (JPanel) myJFrame.getGlassPane();
         myJFrame.add(glassPane);

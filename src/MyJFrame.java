@@ -1,16 +1,19 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
-import java.awt.Color;
+import java.awt.event.*;
 
 /**
  * 创建窗口
  */
 class MyJFrame extends JFrame {
 
+    InterfaceExecution IE;
     JMenuBar myJMenuBar;
     JMenu myJMenu[];
     JMenuItem myJMenuItem[][];
@@ -30,6 +33,10 @@ class MyJFrame extends JFrame {
         setVisible(true);
     }
 
+    void setIE(InterfaceExecution interfaceExecution) {
+        IE = interfaceExecution;
+    }
+
     JMenuBar setMenu(int menuNumber) {
 
         myJMenuBar = new JMenuBar();
@@ -43,7 +50,7 @@ class MyJFrame extends JFrame {
         myJMenu[1] = new JMenu("转到");
         myJMenu[2] = new JMenu("帮助");
 
-        JMenuItem[][] myJMenuItem = new JMenuItem[3][];
+        myJMenuItem = new JMenuItem[3][];
 
         myJMenuItem[0] = new JMenuItem[] {
                 new JMenuItem("音量"),
@@ -83,6 +90,34 @@ class MyJFrame extends JFrame {
     }
 
     void addJMenuListener() {
+
+        myJMenuItem[2][0].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IE.openFile.inputFilePath(".\\README.md");
+            }
+        });
+
+        myJMenuItem[2][1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String message = "<html>" +
+                        "<body>" +
+                        "<p>《The Slumber Interval》版本 2.0（测试版本） - qqry<br>" +
+                        "是一款基于Java开发的开源软件，并集成了MySQL数据库功能。</p>" +
+                        "<p>本软件遵循MIT开源协议，在遵守协议条款的前提下，<br>" +
+                        "用户可自由使用、复制、修改、合并、出版、散布、<br>" +
+                        "再授权及销售本软件及其衍生作品。</p>" +
+                        "<p>若您希望深入了解软件的源代码或参与项目开发，<br>" +
+                        "请复制以下GitHub链接并在浏览器中访问：</p>" +
+                        "<p><font color='blue'><u>https://github.com/qqryandttz/TSIv2</u></font></p>" +
+                        "<p>我们诚挚邀请各位开发者共同推动本软件的进步与完善。</p>" +
+                        "</body>" +
+                        "</html>";
+
+                JOptionPane.showMessageDialog(null, message, "The Slumber Interval", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
 
     }
 
