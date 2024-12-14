@@ -34,6 +34,8 @@ public class MyLoginPage {
     roundedButton signButton, registerButton;
 
     MyDB myDB = new MyDB();
+    Boolean isLoad = false;
+    // Boolean isAutoLoad = false;
 
     MyLoginPage(String frameName, InterfaceExecution IE) {
 
@@ -43,7 +45,12 @@ public class MyLoginPage {
         loginFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                IE.revertLogin();
+                if (!isLoad) {
+                    IE.revertLogin();
+                } else {
+                    isLoad = true;
+                    IE.launchPage.progressBar.smoothProgressTo(15, 30);
+                }
             }
         });
 
@@ -82,7 +89,8 @@ public class MyLoginPage {
 
     void addField() {
 
-        loginField = new JTextField("input your user name");
+        // loginField = new JTextField("input your user name");
+        loginField = new JTextField("qqry");
         loginField.setFont(new Font("黑体", Font.BOLD, 24));
         loginField.setForeground(MyStyle.getSubTitleColor());
         loginField.setBackground(new Color(36, 39, 43));
@@ -90,7 +98,7 @@ public class MyLoginPage {
         loginField.setBounds(230, 135, 412, 37);
         loginContentPane.add(loginField);
 
-        pwdField = new JPasswordField();
+        pwdField = new JPasswordField("qqry");
         pwdField.setFont(new Font("黑体", Font.BOLD, 24));
         pwdField.setForeground(MyStyle.getSubTitleColor());
         pwdField.setBackground(new Color(36, 39, 43));
@@ -111,25 +119,6 @@ public class MyLoginPage {
         autoLoginRadioButton.setBackground(MyStyle.getBottonColor());
         autoLoginRadioButton.setForeground(MyStyle.getBottonFontColor());
         loginContentPane.add(autoLoginRadioButton);
-
-        autoLoginRadioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (autoLoginRadioButton.isSelected()) {
-                    // 如果选中
-                    try {
-                        List<String> macs = MacTools.getActiveMacList();
-                        System.out.println("本机的活动网卡的MAC地址有: " + macs);
-                    } catch (SocketException ex) {
-                        System.out.println("MAC获取出现错误!");
-                    }
-
-                } else {
-                    // 如果没选中
-
-                }
-            }
-        });
     }
 
     void addBotton() {
@@ -152,27 +141,49 @@ public class MyLoginPage {
 
                 MyStyle.playPressButtonSound();
 
-                if (!isValidString(loginField.getText())) {
-                    JOptionPane.showMessageDialog(null, "请重新输入用户名！", "警告", JOptionPane.INFORMATION_MESSAGE);
+                String username = loginField.getText();
+                String pwd = pwdField.getText();
 
-                } else if (!isValidString(pwdField.getText())) {
-                    JOptionPane.showMessageDialog(null, "请重新输入密码！", "警告", JOptionPane.INFORMATION_MESSAGE);
+                if (!isValidString(username)) {
+                    String message = "<html>请重新输入用户名！<br>用户名格式为：4-12位，<br>由数字、字母、部分特殊字符组成。</html>";
+                    JOptionPane.showMessageDialog(null, message, "登录失败", JOptionPane.INFORMATION_MESSAGE);
+
+                } else if (!isValidString(pwd)) {
+                    String message = "<html>请重新输入密码！<br>密码格式为：4-12位，<br>由数字、字母、部分特殊字符组成。</html>";
+                    JOptionPane.showMessageDialog(null, message, "登录失败", JOptionPane.INFORMATION_MESSAGE);
 
                 } else {
-                    Boolean result = myDB.load(loginField.getText(), pwdField.getText());
-                    if (result == false) {
-                        System.out.println("登录验证结果: " + result);
-                        JOptionPane.showMessageDialog(null, "登录失败！", "警告", JOptionPane.INFORMATION_MESSAGE);
+                    if (!myDB.findUser(username)) {
+                        JOptionPane.showMessageDialog(null, "未找到该用户，请重新输入。", "登录失败",
+                                JOptionPane.INFORMATION_MESSAGE);
 
                     } else {
-                        System.out.println("登录成功！");
+                        Boolean result = myDB.load(username, pwd);
+                        if (result == false) {
+                            JOptionPane.showMessageDialog(null, "用户名与密码不匹配，请重新输入。", "登录失败",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            result = myDB.updateAutoLogin(username);
+                            if (result == false) {
+                                JOptionPane.showMessageDialog(null, "程序出错！数据库无法交互！", "警告", JOptionPane.ERROR_MESSAGE);
+
+                            }
+                            if (autoLoginRadioButton.isSelected()) {
+                                try {
+                                    List<String> macs = MacTools.getActiveMacList();
+                                    myDB.updateUserMacAddresses(username, macs);
+                                    System.out.println("自动登录设置成功！ 本机的活动网卡的MAC地址有:" + macs);
+                                } catch (SocketException ex) {
+                                    JOptionPane.showMessageDialog(null, "程序出错！无法获取自动登录信息！", "警告",
+                                            JOptionPane.ERROR_MESSAGE);
+                                }
+                            }
+                            isLoad = true;
+                            loginFrame.dispose();
+
+                        }
                     }
                 }
-
-                // if (!autoLoginRadioButton.isSelected()) {
-
-                // }
-
             }
         });
 
@@ -209,9 +220,39 @@ public class MyLoginPage {
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 MyStyle.playPressButtonSound();
-                // registerButton.setVisible(false);
+
+                String username = loginField.getText();
+                String pwd = pwdField.getText();
+                if (!isValidString(username)) {
+                    String message = "<html>请重新输入用户名！<br>用户名格式为：4-12位，<br>由数字、字母、部分特殊字符组成。</html>";
+                    JOptionPane.showMessageDialog(null, message, "注册失败", JOptionPane.INFORMATION_MESSAGE);
+
+                } else if (!isValidString(pwd)) {
+                    String message = "<html>请重新输入密码！<br>密码格式为：4-12位，<br>由数字、字母、部分特殊字符组成。</html>";
+                    JOptionPane.showMessageDialog(null, message, "注册失败", JOptionPane.INFORMATION_MESSAGE);
+
+                } else {
+                    String invitationCode = JOptionPane.showInputDialog(null, "请输入邀请码：\n", "用户注册",
+                            JOptionPane.PLAIN_MESSAGE);
+                    if (Integer.parseInt(invitationCode) != 61) {
+                        JOptionPane.showMessageDialog(null, "邀请码错误，无法注册。", "用户注册", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        if (myDB.findUser(username)) {
+                            JOptionPane.showMessageDialog(null, "该用户名已经存在，请重新输入用户名", "注册失败",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            if (!myDB.registerUser(username, pwd)) {
+                                JOptionPane.showMessageDialog(null, "程序出错！无法进行注册！", "警告", JOptionPane.ERROR_MESSAGE);
+                            } else {
+                                JOptionPane.showMessageDialog(null, "注册成功，请重新登录。", "用户注册",
+                                        JOptionPane.INFORMATION_MESSAGE);
+
+                            }
+                        }
+
+                    }
+                }
             }
         });
 

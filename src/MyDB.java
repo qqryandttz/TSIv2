@@ -1,4 +1,8 @@
 import java.sql.*;
+import java.util.List;
+import java.util.StringJoiner;
+
+import javax.swing.JOptionPane;
 
 /**
  * 数据库连接
@@ -6,19 +10,15 @@ import java.sql.*;
 class MyDB {
 
     final static String DBName = "TSIv2";
-    final static String user = "root";
+    final static String user = "qqry";
     final static String password = "61";
-    static Connection con;
+    static Connection con = null;
+    static ResultSet rs = null;
+    static PreparedStatement pstmt = null;
 
-    PreparedStatement pstmt = null;
-
-    public static void main(String[] args) {
-        // 测试load方法
-        MyDB myDB = new MyDB();
-        Boolean result = myDB.load("qqry", "qqry");
-        System.out.println("登录验证结果: " + result);
-    }
-
+    /**
+     * 建立数据库的连接
+     */
     MyDB() {
 
         try {
@@ -29,8 +29,8 @@ class MyDB {
         }
 
         con = null;
-        String url = "jdbc:mysql://localhost:3306/" + DBName
-        // String url = "jdbc:mysql://47.98.243.58:3306/" + DBName
+        // String url = "jdbc:mysql://localhost:3306/" + DBName
+        String url = "jdbc:mysql://47.98.243.58:3306/" + DBName
                 + "?useSSL=false&characterEncoding=utf-8&allowPublicKeyRetrieval=true&serverTimezone=UTC";
         try {
             con = DriverManager.getConnection(url, user, password);
@@ -45,22 +45,6 @@ class MyDB {
 
     public Connection getCon() {
         return con;
-    }
-
-    void creatTable(Connection con, String tableName) {
-
-        // PreparedStatement pstmt = con.prepareStatement();
-
-        try {
-            java.sql.Statement statement = con.createStatement();
-            String sql = "CREATE TABLE qqry (id INT PRIMARY KEY, name VARCHAR(50))";
-            statement.executeUpdate(sql);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("发生错误！");
-        }
-
     }
 
     void siwu(Connection con) {
@@ -99,35 +83,165 @@ class MyDB {
 
     }
 
-    // 验证登录信息的方法
-    public Boolean load(String login, String pwd) {
-        Boolean isValid = false;
-
+    /**
+     * 查找当前用户是否存在
+     */
+    Boolean findUser(String userName) {
+        Boolean isExist = false;
         try {
-            // if (con != null && !con.isClosed()) {
-            System.out.println("有进来吗？");
-            String query = "SELECT * FROM 用户表 WHERE 用户名 = ? AND 密码 = ?";
-            PreparedStatement pstmt = con.prepareStatement(query);
-            pstmt.setString(1, login);
-            pstmt.setString(2, pwd);
+            if (con != null && !con.isClosed()) {
+                String query = "SELECT 1 FROM 用户表 WHERE 用户名 = ?";
+                pstmt = con.prepareStatement(query);
+                pstmt.setString(1, userName);
 
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                isValid = true;
+                rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    isExist = true;
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "程序出错！未获取到数据库连接！", "警告", JOptionPane.ERROR_MESSAGE);
+
             }
-
-            rs.close();
-            pstmt.close();
-            // }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            //stopDB();
+            try {
+                if (rs != null)
+                    rs.close();
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return isExist;
+    }
+
+    /**
+     * 查询用户名密码是否正确
+     */
+    Boolean load(String login, String pwd) {
+        Boolean isValid = false;
+
+        try {
+            if (con != null && !con.isClosed()) {
+                String query = "SELECT * FROM 用户表 WHERE 用户名 = ? AND 密码 = ?";
+                PreparedStatement pstmt = con.prepareStatement(query);
+                pstmt.setString(1, login);
+                pstmt.setString(2, pwd);
+
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    isValid = true;
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "程序出错！未获取到数据库连接！", "警告", JOptionPane.ERROR_MESSAGE);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
 
         return isValid;
     }
 
+    /**
+     * 存储mac地址表
+     */
+    public Boolean updateUserMacAddresses(String userName, List<String> macs) {
+        Boolean isSuccess = false;
+        String macAddressesString = convertMacListToString(macs);
+
+        try {
+            if (con != null && !con.isClosed()) {
+                String updateQuery = "UPDATE 用户表 SET mac地址组 = ?, 是否自动登入 = TRUE WHERE 用户名 = ?";
+                pstmt = con.prepareStatement(updateQuery);
+                pstmt.setString(1, macAddressesString);
+                pstmt.setString(2, userName);
+
+                int affectedRows = pstmt.executeUpdate();
+                if (affectedRows > 0) {
+                    isSuccess = true;
+                } else {
+                    JOptionPane.showMessageDialog(null, "程序出错！无法自动登录！", "警告", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "程序出错！未获取到数据库连接！", "警告", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return isSuccess;
+    }
+
+    /**
+     * mac转换，仅在实现自动登入中被引用
+     */
+    private static String convertMacListToString(List<String> macs) {
+        StringJoiner joiner = new StringJoiner(",");
+        for (String mac : macs) {
+            joiner.add(mac);
+        }
+        return joiner.toString();
+    }
+
+    /**
+     * 用户注册
+     */
+    Boolean registerUser(String username, String pwd) {
+        Boolean isRegister = false;
+        String insertQuery = "INSERT INTO 用户表 (用户名, 密码, 角色, 注册时间, 最后登入时间, 音乐开关, 文本呈现速度, 是否自动登入, 成就数量) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pstmt = con.prepareStatement(insertQuery)) {
+            pstmt.setString(1, username);
+            pstmt.setString(2, pwd);
+            pstmt.setString(3, "玩家");
+            pstmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
+            pstmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
+            pstmt.setBoolean(6, true);
+            pstmt.setInt(7, 1);
+            pstmt.setBoolean(8, false);
+            pstmt.setInt(9, 0);
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("注册用户失败，未影响任何行");
+            } else {
+                isRegister = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return isRegister;
+    }
+
+    /**
+     * 关闭数据库
+     */
     void stopDB() {
 
         try {
@@ -141,6 +255,36 @@ class MyDB {
             closeEx.printStackTrace();
         }
 
+    }
+
+    /**
+     * 将用户的自动登录置为false
+     */
+    public Boolean updateAutoLogin(String userName) {
+        Boolean isSuccess = false;
+        String updateQuery = "UPDATE 用户表 SET 是否自动登入 = ? WHERE 用户名 = ?";
+
+        try (PreparedStatement pstmt = con.prepareStatement(updateQuery)) {
+
+            pstmt.setBoolean(1, false);
+            pstmt.setString(2, userName);
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                isSuccess = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return isSuccess;
     }
 
 }

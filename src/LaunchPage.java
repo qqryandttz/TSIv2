@@ -82,7 +82,6 @@ public class LaunchPage extends JPanel {
                 AddProcessBar();
                 progressBar.smoothProgressTo(15);
                 myLoginPage = new MyLoginPage("登入页面", IE);
-
             }
         });
 
