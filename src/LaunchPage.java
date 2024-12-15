@@ -83,9 +83,9 @@ public class LaunchPage extends JPanel {
                 startBotton.setVisible(false);
                 AddProcessBar();
                 progressBar.smoothProgressTo(15);
-                if (!isAutoLoading()) {
-                    myLoginPage = new MyLoginPage("登入页面", IE);
-                }
+                // if (!isAutoLoading()) {
+                myLoginPage = new MyLoginPage("登入页面", IE);
+                // }
             }
         });
 

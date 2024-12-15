@@ -10,7 +10,7 @@ public class TSIv2 {
     public static void main(String[] args) {
 
         InterfaceExecution interfaceExecution = new InterfaceExecution();
-        MyStyle.stopMusic();
+        // MyStyle.stopMusic();
 
     }
 }

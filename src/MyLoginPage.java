@@ -35,7 +35,6 @@ public class MyLoginPage {
 
     MyDB myDB = new MyDB();
     Boolean isLoad = false;
-    // Boolean isAutoLoad = false;
 
     MyLoginPage(String frameName, InterfaceExecution IE) {
 
