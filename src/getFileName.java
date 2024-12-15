@@ -1,5 +1,9 @@
 import java.io.File;
 
+/**
+ * 这个可能这次课设用不到，因为可能来不及开发创作者身份的功能
+ * 之后开发到了就需要读取文件夹存储进数据库，到时候用的应该就是Sqlite
+ */
 public class getFileName {
 
     /**

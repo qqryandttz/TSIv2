@@ -18,6 +18,7 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 /**
  * 登入页面
@@ -165,6 +166,20 @@ public class MyLoginPage {
                             result = myDB.updateAutoLogin(username);
                             if (result == false) {
                                 JOptionPane.showMessageDialog(null, "程序出错！数据库无法交互！", "警告", JOptionPane.ERROR_MESSAGE);
+
+                            } else {
+                                System.out.println("成功登录");
+                                // 这里可以有那种自动弹窗，欢迎进入的
+                                // 在文件记录下来登录名，引用一个函数
+                                try {
+                                    MyFileModifier.settingsParser(MyStyle.getTSIv2SettingFilePath(),
+                                            "TSIv2", "最近登录用户", username);
+
+                                } catch (IOException e1) {
+                                    JOptionPane.showMessageDialog(null, "配置文件出错！无法写入用户信息！", "警告",
+                                            JOptionPane.ERROR_MESSAGE);
+
+                                }
 
                             }
                             if (autoLoginRadioButton.isSelected()) {

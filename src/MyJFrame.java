@@ -17,7 +17,6 @@ class MyJFrame extends JFrame {
     JMenuBar myJMenuBar;
     JMenu myJMenu[];
     JMenuItem myJMenuItem[][];
-    MyStyle myStyle = new MyStyle();
 
     MyJFrame(String frameName, int width, int height) {
 
@@ -73,14 +72,14 @@ class MyJFrame extends JFrame {
 
         for (int i = 0; i < myJMenu.length; i++) {
             myJMenuBar.add(myJMenu[i]);
-            myJMenu[i].setForeground(myStyle.getMenuColor());
-            myJMenu[i].setFont(myStyle.getMenuFont());
+            myJMenu[i].setForeground(MyStyle.getMenuColor());
+            myJMenu[i].setFont(MyStyle.getMenuFont());
 
             if (myJMenuItem[i] != null) {
                 for (int j = 0; j < myJMenuItem[i].length; j++) {
                     if (myJMenuItem[i][j] != null) {
                         myJMenu[i].add(myJMenuItem[i][j]);
-                        myJMenuItem[i][j].setFont(myStyle.getMenuFont());
+                        myJMenuItem[i][j].setFont(MyStyle.getMenuFont());
                     }
                 }
             }
@@ -94,7 +93,7 @@ class MyJFrame extends JFrame {
         myJMenuItem[2][0].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                IE.openFile.inputFilePath(".\\README.md");
+                IE.openFile.inputFilePath(MyStyle.getReadmeFilePath());
             }
         });
 
@@ -104,14 +103,12 @@ class MyJFrame extends JFrame {
                 String message = "<html>" +
                         "<body>" +
                         "<p>《The Slumber Interval》版本 2.0（测试版本） - qqry<br>" +
-                        "是一款基于Java开发的开源软件，并集成了MySQL数据库功能。</p>" +
+                        "是一款基于Java开发的开源视觉小说游戏框架。</p>" +
                         "<p>本软件遵循MIT开源协议，在遵守协议条款的前提下，<br>" +
-                        "用户可自由使用、复制、修改、合并、出版、散布、<br>" +
-                        "再授权及销售本软件及其衍生作品。</p>" +
+                        "用户可自由使用本软件及其衍生作品。</p>" +
                         "<p>若您希望深入了解软件的源代码或参与项目开发，<br>" +
                         "请复制以下GitHub链接并在浏览器中访问：</p>" +
                         "<p><font color='blue'><u>https://github.com/qqryandttz/TSIv2</u></font></p>" +
-                        "<p>我们诚挚邀请各位开发者共同推动本软件的进步与完善。</p>" +
                         "</body>" +
                         "</html>";
 

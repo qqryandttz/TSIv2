@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
  * 每引用一次返回一行内容的字符串
  * 并且这一行开头不能是空白，并且这一行不能是空白，并且如果开头是//则跳过
  */
-class FileReader {
+class MyFileReader {
 
     private String filePath;
     private FileInputStream fileInputStream;
@@ -20,7 +20,7 @@ class FileReader {
      */
     public static void main(String[] args) {
 
-        FileReader reader = new FileReader(
+        MyFileReader reader = new MyFileReader(
                 "B:\\1_project\\5_自写代码\\_200自写java\\TSIv2工作区\\TSIv2\\res\\TSIv2\\setting.txt");
         String nonBlankLine;
 
@@ -30,7 +30,7 @@ class FileReader {
         reader.close();
     }
 
-    FileReader(String Path) {
+    MyFileReader(String Path) {
         this.filePath = Path;
         try {
             fileInputStream = new FileInputStream(filePath);

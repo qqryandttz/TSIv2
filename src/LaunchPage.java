@@ -132,6 +132,10 @@ public class LaunchPage extends JPanel {
      * 查找到用户名，再去看是否开启自动登录，如果开启，就获取mac地址，获取成功就自动登入
      */
     Boolean isAutoLoading() {
+
+        String latestLoggedInUsername = MyFileModifier.readFieldValue(MyStyle.getTSIv2SettingFilePath(),
+                section, subField);
+        ;
         try {
             List<String> macs = MacTools.getActiveMacList();
             MyDB myDB = new MyDB();

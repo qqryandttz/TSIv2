@@ -104,4 +104,22 @@ class MyStyle {
         myMusic.startMusic();
     }
 
+    // 这里放一些文件路径，方便引用
+
+    static public String readmeFilePath = ".\\README.md";
+    static public String storySettingFilePath = ".\\res\\story";
+    static public String TSIv2SettingFilePath = ".\\res\\TSIv2\\setting.txt";
+
+    public static String getReadmeFilePath() {
+        return readmeFilePath;
+    }
+
+    public static String getStorySettingFilePath(int storyNumber) {
+        return storySettingFilePath + storyNumber + "\\setting.txt";
+    }
+
+    public static String getTSIv2SettingFilePath() {
+        return TSIv2SettingFilePath;
+    }
+
 }
