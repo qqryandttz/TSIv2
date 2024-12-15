@@ -34,7 +34,7 @@ public class MyLoginPage {
     JRadioButton autoLoginRadioButton;
     roundedButton signButton, registerButton;
 
-    MyDB myDB = new MyDB();
+    MyDB myDB;
     Boolean isLoad = false;
 
     MyLoginPage(String frameName, InterfaceExecution IE) {
@@ -169,7 +169,7 @@ public class MyLoginPage {
 
                             } else {
                                 System.out.println("成功登录");
-                                // 这里可以有那种自动弹窗，欢迎进入的
+                                这里可以有那种自动弹窗，欢迎进入的
                                 // 在文件记录下来登录名，引用一个函数
                                 try {
                                     MyFileModifier.settingsParser(MyStyle.getTSIv2SettingFilePath(),

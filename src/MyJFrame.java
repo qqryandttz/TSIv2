@@ -90,6 +90,15 @@ class MyJFrame extends JFrame {
 
     void addJMenuListener() {
 
+        // myLoginPage = new MyLoginPage("登入页面", IE);
+
+        myJMenuItem[2][0].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IE.openFile.inputFilePath(MyStyle.getReadmeFilePath());
+            }
+        });
+
         myJMenuItem[2][0].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

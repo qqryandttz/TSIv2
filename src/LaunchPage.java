@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -33,7 +34,6 @@ public class LaunchPage extends JPanel {
         AddStarrySkyPanel();
         AddTitle();
         AddStartBotton();
-
         this.setLayout(new BorderLayout());
         this.add(layeredPane, BorderLayout.CENTER);
     }
@@ -80,12 +80,24 @@ public class LaunchPage extends JPanel {
             public void actionPerformed(ActionEvent e) {
 
                 MyStyle.playPressButtonSound();
-                startBotton.setVisible(false);
-                AddProcessBar();
-                progressBar.smoothProgressTo(15);
-                // if (!isAutoLoading()) {
-                myLoginPage = new MyLoginPage("登入页面", IE);
-                // }
+
+                if (NetworkUtils.isNetworkAvailable()) {
+                    startBotton.setVisible(false);
+                    AddProcessBar();
+                    progressBar.smoothProgressTo(15);
+
+                    if (!isAutoLoading()) {
+                        myLoginPage = new MyLoginPage("登入页面", IE);
+                    } else {
+                        System.out.println("自动登录成功！");
+                        有弹窗;
+                        progressBar.smoothProgressTo(15, 30);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "网络连接超时，请检查网络设置。", "警告",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+
             }
         });
 
@@ -128,21 +140,23 @@ public class LaunchPage extends JPanel {
     }
 
     /**
-     * 待处理。实现自动登入逻辑，需要在配置文件中存储字段，最近的登录用户
+     * 实现自动登入逻辑，需要在配置文件中存储字段，最近的登录用户
      * 查找到用户名，再去看是否开启自动登录，如果开启，就获取mac地址，获取成功就自动登入
      */
     Boolean isAutoLoading() {
-
-        String latestLoggedInUsername = MyFileModifier.readFieldValue(MyStyle.getTSIv2SettingFilePath(),
-                section, subField);
-        ;
         try {
+
+            String latestLoggedInUsername = MyFileModifier.readFieldValue(MyStyle.getTSIv2SettingFilePath(),
+                    "TSIv2", "最近登录用户");
             List<String> macs = MacTools.getActiveMacList();
             MyDB myDB = new MyDB();
+            return myDB.checkUserMacAddresses(latestLoggedInUsername, macs);
+
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "无法自动登录！请手动登录！", "警告", JOptionPane.ERROR_MESSAGE);
 
         }
-        return true;
+        return false;
 
     }
 
