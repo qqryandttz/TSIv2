@@ -5,11 +5,11 @@ import java.awt.geom.RoundRectangle2D;
 /**
  * 圆角按钮
  */
-class roundedButton extends JButton {
+class RoundedButton extends JButton {
 
     private int rounded直径;
 
-    public roundedButton(String 文本, int rounded直径) {
+    public RoundedButton(String 文本, int rounded直径) {
         super(文本);
         this.rounded直径 = rounded直径;
         setContentAreaFilled(false);

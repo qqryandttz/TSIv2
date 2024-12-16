@@ -33,7 +33,7 @@ public class MyLoginPage {
     JTextField loginField;
     JPasswordField pwdField;
     JRadioButton autoLoginRadioButton;
-    roundedButton signButton, registerButton;
+    RoundedButton signButton, registerButton;
 
     Boolean isLoad = false;
     MyDB myDB = new MyDB();
@@ -125,7 +125,7 @@ public class MyLoginPage {
 
     void addBotton() {
 
-        signButton = new roundedButton("登录", 30);
+        signButton = new RoundedButton("登录", 30);
         loginContentPane.add(signButton, new Integer(JLayeredPane.DEFAULT_LAYER + 10));
         signButton.setBorderPainted(false);
 
@@ -176,16 +176,8 @@ public class MyLoginPage {
                                 IE.launchPage.getDbDate(username);
 
                                 // 在文件记录下来登录名，引用一个函数
-                                try {
-                                    MyFileModifier.settingsParser(MyStyle.getTSIv2SettingFilePath(),
-                                            "TSIv2", "最近登录用户", username);
-
-                                } catch (IOException e1) {
-                                    JOptionPane.showMessageDialog(null, "配置文件出错！无法写入用户信息！", "警告",
-                                            JOptionPane.ERROR_MESSAGE);
-
-                                }
-
+                                MyFileModifier.settingsParser(MyStyle.getTSIv2SettingFilePath(),
+                                        "TSIv2", "最近登录用户", username);
                             }
                             if (autoLoginRadioButton.isSelected()) {
                                 try {
@@ -225,7 +217,7 @@ public class MyLoginPage {
             }
         });
 
-        registerButton = new roundedButton("注册", 30);
+        registerButton = new RoundedButton("注册", 30);
         loginContentPane.add(registerButton, new Integer(JLayeredPane.DEFAULT_LAYER + 10));
         registerButton.setBorderPainted(false);
 

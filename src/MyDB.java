@@ -356,6 +356,9 @@ class MyDB {
         return isMatch;
     }
 
+    /**
+     * 从数据库获取用户数据
+     */
     static void dbGetUserDate(String userName) {
 
         try {
@@ -396,37 +399,84 @@ class MyDB {
 
     }
 
-    // public static int hasOrNot(String listName, String[] value_names, String[]
-    // values) {
-    // String query = "SELECT * FROM " + listName + " WHERE ";
+    /**
+     * 一个挺好用的代码，by Imanoooo
+     * 作用似乎是查找某些列是否存在
+     */
+    public static int hasOrNot(String listName, String[] value_names, String[] values) {
+        String query = "SELECT * FROM " + listName + " WHERE ";
 
-    // if (value_names.length != values.length) {
-    // AException.Exception("无效参数！");
-    // }
+        for (int i = 0; i < value_names.length; i++) {
+            query += value_names[i] + " = '" + values[i] + "'";
 
-    // for (int i = 0; i < value_names.length; i++) {
-    // query += value_names[i] + " = '" + values[i] + "'";
+            if (i != value_names.length - 1) {
+                query += " AND ";
+            }
+        }
 
-    // if (i != value_names.length - 1) {
-    // query += " AND ";
-    // }
-    // }
+        System.out.println(query);
 
-    // System.out.println(query);
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = con.prepareStatement(query);
 
-    // PreparedStatement preparedStatement;
-    // try {
-    // preparedStatement = con.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery(query);
 
-    // ResultSet resultSet = preparedStatement.executeQuery(query);
+            if (resultSet.next()) {
+                return 1;
+            }
+        } catch (SQLException e) {
 
-    // if (resultSet.next()) {
-    // return HAS;
-    // }
-    // } catch (SQLException e) {
+        }
 
-    // }
+        return 0;
+    }
 
-    // return HAS_NO;
-    // }
+    /**
+     * 一个挺好用的代码，by Imanoooo
+     * 作用似乎是安全地添加
+     */
+    public static int secureAddRecord(String listName, String[] value_names, String[] values) {
+        if (hasOrNot(listName, value_names, values) == 1) {
+            // 已经存在
+            return 0;
+        }
+
+        String update = "INSERT INTO " + listName + " ";
+        String value_names_part = "";
+        String values_part = "";
+
+        for (int i = 0; i < value_names.length; i++) {
+            value_names_part += value_names[i];
+            values_part += values[i];
+
+            if (i != value_names.length - 1) {
+                value_names_part += ", ";
+                values_part += ", ";
+            }
+        }
+
+        update += "( " + value_names_part + " ) VALUES ( " + values_part + " )";
+
+        System.out.println(update);
+
+        PreparedStatement preparedStatement;
+
+        try {
+            preparedStatement = con.prepareStatement(update);
+
+            int rows = preparedStatement.executeUpdate();
+
+            if (rows == 0) {
+                // 添加失败
+                return 0;
+            }
+        } catch (SQLException e) {
+
+        }
+
+        // 添加成功
+        return 1;
+    }
+
 }

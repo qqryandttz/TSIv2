@@ -109,6 +109,7 @@ class MyStyle {
     static public String readmeFilePath = ".\\README.md";
     static public String storySettingFilePath = ".\\res\\story";
     static public String TSIv2SettingFilePath = ".\\res\\TSIv2\\setting.txt";
+    static public String resFilePath = ".\\res";
 
     public static String getReadmeFilePath() {
         return readmeFilePath;
@@ -120,6 +121,10 @@ class MyStyle {
 
     public static String getTSIv2SettingFilePath() {
         return TSIv2SettingFilePath;
+    }
+
+    public static String getResFilePath() {
+        return resFilePath;
     }
 
 }

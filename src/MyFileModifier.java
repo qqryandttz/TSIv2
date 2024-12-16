@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.swing.JOptionPane;
+
 public class MyFileModifier {
 
     /*
@@ -28,36 +30,44 @@ public class MyFileModifier {
     /**
      * 解析并修改设置文件，删除所有空行
      */
-    public static void settingsParser(String filePath, String section, String subField, String newValue)
-            throws IOException {
-        List<String> lines = readFileToListWithoutEmptyLines(filePath);
-        List<String> modifiedLines = new ArrayList<>();
-        String currentSection = "";
-        // boolean fieldFound = false;
+    public static void settingsParser(String filePath, String section, String subField, String newValue) {
 
-        for (String line : lines) {
-            if (line.startsWith("--")) {
-                currentSection = line.substring(2).trim();
-                modifiedLines.add(line);
-                if (currentSection.equals(section)) {
-                    // fieldFound = false;
-                }
-            } else {
-                if (currentSection.equals(section)) {
-                    String[] parts = line.split(": ", 2);
-                    if (parts.length == 2 && parts[0].trim().equals(subField)) {
-                        modifiedLines.add(subField + ": " + newValue);
-                        // fieldFound = true;
+        try {
+            List<String> lines = readFileToListWithoutEmptyLines(filePath);
+            List<String> modifiedLines = new ArrayList<>();
+            String currentSection = "";
+            // boolean fieldFound = false;
+
+            for (String line : lines) {
+                if (line.startsWith("--")) {
+                    currentSection = line.substring(2).trim();
+                    modifiedLines.add(line);
+                    if (currentSection.equals(section)) {
+                        // fieldFound = false;
+                    }
+                } else {
+                    if (currentSection.equals(section)) {
+                        String[] parts = line.split(": ", 2);
+                        if (parts.length == 2 && parts[0].trim().equals(subField)) {
+                            modifiedLines.add(subField + ": " + newValue);
+                            // fieldFound = true;
+                        } else {
+                            modifiedLines.add(line);
+                        }
                     } else {
                         modifiedLines.add(line);
                     }
-                } else {
-                    modifiedLines.add(line);
                 }
             }
+
+            writeListToFile(modifiedLines, filePath);
+
+        } catch (IOException e) {
+
+            JOptionPane.showMessageDialog(null, "无法写入配置文件。", "警告",
+                    JOptionPane.ERROR_MESSAGE);
         }
 
-        writeListToFile(modifiedLines, filePath);
     }
 
     /**
@@ -69,54 +79,52 @@ public class MyFileModifier {
      * @return 次字段的值，如果未找到则返回 null
      * @throws IOException 如果文件读取过程中发生错误
      */
-    public static String readFieldValue(String filePath, String section, String subField) throws IOException {
-        MyFileReader reader = new MyFileReader(filePath);
-        String currentSection = "";
-        String line;
+    public static String readFieldValue(String filePath, String section, String subField) {
 
-        while ((line = reader.readNonBlankLine()) != null) {
-            if (line.startsWith("--")) {
-                currentSection = line.substring(2).trim();
-            } else {
-                String[] parts = line.split(": ", 2);
-                if (parts.length == 2) {
-                    String field = parts[0].trim();
-                    String value = parts[1].trim();
+        try {
+            MyFileReader reader = new MyFileReader(filePath);
+            String currentSection = "";
+            String line;
 
-                    if (currentSection.equals(section) && field.equals(subField)) {
-                        reader.close();
-                        return value;
+            while ((line = reader.readNonBlankLine()) != null) {
+                if (line.startsWith("--")) {
+                    currentSection = line.substring(2).trim();
+                } else {
+                    String[] parts = line.split(": ", 2);
+                    if (parts.length == 2) {
+                        String field = parts[0].trim();
+                        String value = parts[1].trim();
+
+                        if (currentSection.equals(section) && field.equals(subField)) {
+                            reader.close();
+                            return value;
+                        }
                     }
                 }
             }
+            reader.close();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "无法读取配置文件。", "警告",
+                    JOptionPane.ERROR_MESSAGE);
         }
 
-        reader.close();
         return null;
+
     }
 
     /*
      * 使用示例
      */
-    // public static void main(String[] args) {
-    // try {
-    // String filePath =
-    // "B:\\1_project\\5_自写代码\\_200自写java\\TSIv2工作区\\TSIv2\\res\\story1\\setting.txt";
-    // // 请替换为实际的文件路径
-    // settingsParser(filePath, "story", "章节数", "61");
-    // System.out.println("修改成功！");
+    public static void main(String[] args) {
 
-    // String section = "story";
-    // String subField = "章节数";
-    // String value = MyFileModifier.readFieldValue(filePath, section, subField);
-    // System.out.println("章节数: " + value);
+        String filePath = "B:\\1_project\\5_自写代码\\_200自写java\\TSIv2工作区\\TSIv2\\res\\story1\\setting.txt";
+        settingsParser(filePath, "story", "章节数", "61");
+        System.out.println("修改成功！");
 
-    // section = "c2.1";
-    // subField = "名称";
-    // value = MyFileModifier.readFieldValue(filePath, section, subField);
-    // System.out.println("c2.1: " + value);
-    // } catch (IOException e) {
-    // e.printStackTrace();
-    // }
-    // }
+        String section = "story";
+        String subField = "章节数";
+        String value = MyFileModifier.readFieldValue(filePath, section, subField);
+        System.out.println("章节数: " + value);
+    }
 }

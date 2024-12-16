@@ -41,28 +41,6 @@ class InterfaceExecution {
 
     Boolean isDBexist;
     Boolean isDBchanged;
-    private String isPage;
-
-    /**
-     * 可以得到
-     * "Launch", "Story", "Chapter", "Plot", "Achievement"
-     */
-    public String getIsPage() {
-        return isPage;
-    }
-
-    /**
-     * 请输入
-     * "Launch", "Story", "Chapter", "Plot", "Achievement"
-     */
-    public void setIsPage(String isPage) {
-        Set<String> validStates = new HashSet<>(Arrays.asList("Launch", "Story", "Chapter", "Plot", "Achievement"));
-        if (validStates.contains(isPage)) {
-            this.isPage = isPage;
-        } else {
-            throw new IllegalArgumentException("Invalid state: " + isPage);
-        }
-    }
 
     void start() {
 
@@ -84,7 +62,7 @@ class InterfaceExecution {
         launchPage = new LaunchPage(this);
         myJFrameContentPane.add("launch", launchPage);
         cardLayout.show(myJFrameContentPane, "launch");
-        setIsPage("Launch");
+        MyDbDate.setIsPage("Launch");
 
         MyStyle.playBgMusic();
     }

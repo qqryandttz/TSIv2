@@ -96,7 +96,7 @@ class MyJFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 IE.musicSet();
-                String isPage = IE.getIsPage();
+                String isPage = MyDbDate.getIsPage();
                 if (isPage == "Launch") {
                     MyStyle.playBgMusic();
                 }

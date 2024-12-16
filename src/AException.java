@@ -1,6 +1,10 @@
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
+/**
+ * by Imanoooo
+ * 不太会弄，先放着
+ */
 public class AException {
     public static void badStory(String location) {
         JOptionPane.showMessageDialog(null, "错误：在读取故事时出错！故事文件可能已经损坏！错误语句：\n" +

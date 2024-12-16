@@ -20,7 +20,7 @@ public class LaunchPage extends JPanel {
     JLayeredPane layeredPane;
     StarrySkyPanel starrySkyPanel;
     JLabel title, subTitle;
-    roundedButton startBotton;
+    RoundedButton startBotton;
 
     MyProgressBar progressBar;
     MyLoginPage myLoginPage;
@@ -73,7 +73,7 @@ public class LaunchPage extends JPanel {
 
     void AddStartBotton() {
 
-        startBotton = new roundedButton("START", 30);
+        startBotton = new RoundedButton("START", 30);
         layeredPane.add(startBotton, new Integer(JLayeredPane.DEFAULT_LAYER + 10));
         startBotton.setBorderPainted(false);
 
@@ -176,8 +176,45 @@ public class LaunchPage extends JPanel {
 
     void getDbDate(String userName) {
         MyDB.dbGetUserDate(userName);
+        progressBar.smoothProgressTo(30, 40);
+        int storyFolders = StoryFolderCounter.countStoryFolders();
+        if (storyFolders == -1) {
+            IE.revertLogin();
+            JOptionPane.showMessageDialog(null, "没有找到任何文件夹！", "提示",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } else if (storyFolders == 0) {
+            IE.revertLogin();
+            JOptionPane.showMessageDialog(null, "不存在故事文件夹。", "提示",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            System.out.println("找到的故事文件夹数量: " + storyFolders);
+            progressBar.smoothProgressTo(40, 50);
 
-        // 读取文件夹，记录当前故事文件夹的个数
+            int efectFolder = 0;
+            for (int i = 0; i < storyFolders; i++) {
+                if (getGameDate(i + 1)) {
+                    efectFolder++;
+                } else {
+                    System.out.println("有效的故事文件夹数量: " + efectFolder);
+                    break;
+                }
+            }
+
+            MyDbDate.setEfectFolder(efectFolder); // 存放数据
+        }
+
+    }
+
+    /**
+     * 对每一个故事文件夹的setting进行检测，查看里面的故事是否有效
+     */
+    Boolean getGameDate(int storyNum) {
+
+        String settingpath = MyStyle.getStorySettingFilePath(storyNum);
+        String storyId = MyFileModifier.readFieldValue(settingpath, "story", "id");
+        String storyName = MyFileModifier.readFieldValue(settingpath, "story", "name");
+
+        return false;
     }
 
 }

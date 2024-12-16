@@ -1,3 +1,7 @@
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 存放数据库的数据
  */
@@ -62,6 +66,39 @@ public class MyDbDate {
 
     public static int getAchieveNum() {
         return achieveNum;
+    }
+
+    public static String iSPage;
+
+    /**
+     * 可以得到
+     * "Launch", "Story", "Chapter", "Plot", "Achievement"
+     */
+    public static String getIsPage() {
+        return iSPage;
+    }
+
+    /**
+     * 请输入
+     * "Launch", "Story", "Chapter", "Plot", "Achievement"
+     */
+    public static void setIsPage(String isPage) {
+        Set<String> validStates = new HashSet<>(Arrays.asList("Launch", "Story", "Chapter", "Plot", "Achievement"));
+        if (validStates.contains(isPage)) {
+            MyDbDate.iSPage = isPage;
+        } else {
+            throw new IllegalArgumentException("Invalid state: " + isPage);
+        }
+    }
+
+    public static int efectFolder;
+
+    public static int getEfectFolder() {
+        return efectFolder;
+    }
+
+    public static void setEfectFolder(int efectFolder) {
+        MyDbDate.efectFolder = efectFolder;
     }
 
     // 文章数据，把后面需要获得的数据都放在这里了
