@@ -110,7 +110,6 @@ class MyDB {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("难不成是这里的报错？");
         } finally {
             try {
                 if (rs != null)
@@ -163,10 +162,6 @@ class MyDB {
             e.printStackTrace();
         }
 
-        if (isValid) {
-            MyDbDate.setUserName(username);
-            MyDbDate.setPwd(pwd);
-        }
         return isValid;
     }
 
@@ -320,7 +315,6 @@ class MyDB {
                     try (ResultSet rs = pstmt.executeQuery()) {
                         if (rs.next()) {
                             isAuto = rs.getBoolean("是否自动登入");
-                            MyDbDate.setIsAutoLoad(isAuto);
                         }
                     }
                 }
@@ -359,11 +353,47 @@ class MyDB {
             e.printStackTrace();
         }
 
-        if (isMatch) {
-            MyDbDate.setUserName(userName);
+        return isMatch;
+    }
+
+    static void dbGetUserDate(String userName) {
+
+        try {
+            if (con != null && !con.isClosed()) {
+                String query = "SELECT 密码, 角色, 音乐开关, 文本呈现速度, 是否自动登入, 成就数量 FROM 用户表 WHERE 用户名 = ?";
+                pstmt = con.prepareStatement(query);
+                pstmt.setString(1, userName);
+
+                rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    String pwd = rs.getString("密码");
+                    String role = rs.getString("角色");
+                    int isMusic = rs.getInt("音乐开关");
+                    int textSpeed = rs.getInt("文本呈现速度");
+                    int isAutoLoad = rs.getInt("是否自动登入");
+                    int achieveNum = rs.getInt("成就数量");
+
+                    // 存储用户信息
+                    MyDbDate.inputUserDate(userName, pwd, role, isMusic, textSpeed, isAutoLoad, achieveNum);
+                } else {
+                    JOptionPane.showMessageDialog(null, "用户不存在！", "警告", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "程序出错！未获取到数据库连接！", "警告", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
 
-        return isMatch;
     }
 
     // public static int hasOrNot(String listName, String[] value_names, String[]

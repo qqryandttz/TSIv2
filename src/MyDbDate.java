@@ -1,9 +1,6 @@
-/*
-* 存放数据库数据
-*/
-
-// MyDbDate.setUserName(userName);
-
+/**
+ * 存放数据库的数据
+ */
 public class MyDbDate {
 
     // 用户数据，登录成功后一次性存入
@@ -16,66 +13,55 @@ public class MyDbDate {
     static String signUpTime;
     static int isMusic;
     static int textSpeed;
-    static Boolean isAutoLoad;
+    static int isAutoLoad;
     static int achieveNum;
+
+    public static void inputUserDate(String userName, String pwd, String role, int isMusic, int textSpeed,
+            int isAutoLoad, int achieveNum) {
+        MyDbDate.userName = userName;
+        MyDbDate.pwd = pwd;
+        MyDbDate.role = role;
+        MyDbDate.isMusic = isMusic;
+        MyDbDate.textSpeed = textSpeed;
+        MyDbDate.isAutoLoad = isAutoLoad;
+        MyDbDate.achieveNum = achieveNum;
+        System.out.println("已存入用户数据：");
+        System.out.println("用户名: " + MyDbDate.userName);
+        System.out.println("密码: " + MyDbDate.pwd);
+        System.out.println("角色: " + MyDbDate.role);
+        System.out.println("是否播放音乐: " + (MyDbDate.isMusic == 1 ? "是" : "否"));
+        System.out.println("文本速度: " + MyDbDate.textSpeed);
+        System.out.println("是否自动加载: " + (MyDbDate.isAutoLoad == 1 ? "是" : "否"));
+        System.out.println("成就数量: " + MyDbDate.achieveNum);
+
+    }
 
     public static String getUserName() {
         return userName;
-    }
-
-    public static void setUserName(String userName) {
-        System.out.println("已存入用户名" + userName);
-        MyDbDate.userName = userName;
     }
 
     public static String getPwd() {
         return pwd;
     }
 
-    public static void setPwd(String pwd) {
-        System.out.println("已存入密码" + pwd);
-        MyDbDate.pwd = pwd;
-    }
-
     public static String getRole() {
         return role;
-    }
-
-    public static void setRole(String role) {
-        MyDbDate.role = role;
     }
 
     public static int getIsMusic() {
         return isMusic;
     }
 
-    public static void setIsMusic(int isMusic) {
-        MyDbDate.isMusic = isMusic;
-    }
-
     public static int getTextSpeed() {
         return textSpeed;
     }
 
-    public static void setTextSpeed(int textSpeed) {
-        MyDbDate.textSpeed = textSpeed;
-    }
-
-    public static Boolean getIsAutoLoad() {
+    public static int getIsAutoLoad() {
         return isAutoLoad;
-    }
-
-    public static void setIsAutoLoad(Boolean isAutoLoad) {
-        MyDbDate.isAutoLoad = isAutoLoad;
-        System.out.println("已存入自动登录" + isAutoLoad);
     }
 
     public static int getAchieveNum() {
         return achieveNum;
-    }
-
-    public static void setAchieveNum(int achieveNum) {
-        MyDbDate.achieveNum = achieveNum;
     }
 
     // 文章数据，把后面需要获得的数据都放在这里了

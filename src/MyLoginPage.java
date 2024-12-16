@@ -52,7 +52,6 @@ public class MyLoginPage {
                 } else {
                     isLoad = true;
                     IE.launchPage.progressBar.smoothProgressTo(15, 30);
-                    // 开始执行其他数据库数据获取逻辑，但是不能在这里执行
                 }
             }
         });
@@ -173,6 +172,8 @@ public class MyLoginPage {
                             } else {
                                 System.out.println("成功登录");
                                 IE.launchPage.loadPopUpLabel.showMessageWithAnimation(username + "，欢迎进入游戏！");
+                                // 开始执行其他数据库数据获取逻辑，但是不能在这里执行
+                                IE.launchPage.getDbDate(username);
 
                                 // 在文件记录下来登录名，引用一个函数
                                 try {
@@ -190,7 +191,7 @@ public class MyLoginPage {
                                 try {
                                     List<String> macs = MacTools.getActiveMacList();
                                     myDB.updateUserMacAddresses(username, macs);
-                                    System.out.println("自动登录设置成功！ 本机的活动网卡的MAC地址有:" + macs);
+                                    System.out.println("自动登录设置成功!");
                                 } catch (SocketException ex) {
                                     JOptionPane.showMessageDialog(null, "程序出错！无法获取自动登录信息！", "警告",
                                             JOptionPane.ERROR_MESSAGE);

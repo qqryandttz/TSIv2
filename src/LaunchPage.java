@@ -25,6 +25,7 @@ public class LaunchPage extends JPanel {
     MyProgressBar progressBar;
     MyLoginPage myLoginPage;
     PopUpLabel loadPopUpLabel;
+    String latestLoggedInUsername;
 
     LaunchPage(InterfaceExecution interfaceExecution) {
 
@@ -99,9 +100,11 @@ public class LaunchPage extends JPanel {
                     } else {
 
                         System.out.println("自动登录成功！");
-                        IE.launchPage.loadPopUpLabel.showMessageWithAnimation(MyDbDate.getUserName() + "，欢迎进入游戏！");
+
+                        IE.launchPage.loadPopUpLabel.showMessageWithAnimation(latestLoggedInUsername + "，欢迎进入游戏！");
                         progressBar.smoothProgressTo(15, 30);
                         // 开始执行其他数据库获取逻辑，当时不能直接在这里执行，我在LaunchPage 再写一个方法
+                        getDbDate(latestLoggedInUsername);
                     }
 
                 } else {
@@ -157,7 +160,7 @@ public class LaunchPage extends JPanel {
     Boolean isAutoLoading() {
         try {
 
-            String latestLoggedInUsername = MyFileModifier.readFieldValue(MyStyle.getTSIv2SettingFilePath(),
+            latestLoggedInUsername = MyFileModifier.readFieldValue(MyStyle.getTSIv2SettingFilePath(),
                     "TSIv2", "最近登录用户");
             List<String> macs = MacTools.getActiveMacList();
             MyDB myDB = new MyDB();
@@ -169,6 +172,12 @@ public class LaunchPage extends JPanel {
         }
         return false;
 
+    }
+
+    void getDbDate(String userName) {
+        MyDB.dbGetUserDate(userName);
+
+        // 读取文件夹，记录当前故事文件夹的个数
     }
 
 }
