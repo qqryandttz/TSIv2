@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- * 启动页面，数据库逻辑执行
+ * 启动页面
  */
 public class LaunchPage extends JPanel {
 
@@ -99,11 +99,11 @@ public class LaunchPage extends JPanel {
                     } else {
 
                         System.out.println("自动登录成功！");
-                        String username = MyDbDate.getUserName();
-                        IE.launchPage.loadPopUpLabel.showMessageWithAnimation(username + "，欢迎进入游戏！");
-
+                        IE.launchPage.loadPopUpLabel.showMessageWithAnimation(MyDbDate.getUserName() + "，欢迎进入游戏！");
                         progressBar.smoothProgressTo(15, 30);
+                        // 开始执行其他数据库获取逻辑，当时不能直接在这里执行，我在LaunchPage 再写一个方法
                     }
+
                 } else {
                     JOptionPane.showMessageDialog(null, "网络连接超时，请检查网络设置。", "警告",
                             JOptionPane.ERROR_MESSAGE);
@@ -161,7 +161,6 @@ public class LaunchPage extends JPanel {
                     "TSIv2", "最近登录用户");
             List<String> macs = MacTools.getActiveMacList();
             MyDB myDB = new MyDB();
-            MyDbDate.setUserName(latestLoggedInUsername);
             return myDB.checkUserMacAddresses(latestLoggedInUsername, macs);
 
         } catch (Exception e) {

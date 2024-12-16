@@ -35,8 +35,8 @@ public class MyLoginPage {
     JRadioButton autoLoginRadioButton;
     roundedButton signButton, registerButton;
 
-    MyDB myDB = new MyDB();
     Boolean isLoad = false;
+    MyDB myDB = new MyDB();
 
     MyLoginPage(String frameName, InterfaceExecution interfaceExecution) {
 
@@ -52,6 +52,7 @@ public class MyLoginPage {
                 } else {
                     isLoad = true;
                     IE.launchPage.progressBar.smoothProgressTo(15, 30);
+                    // 开始执行其他数据库数据获取逻辑，但是不能在这里执行
                 }
             }
         });
@@ -172,8 +173,6 @@ public class MyLoginPage {
                             } else {
                                 System.out.println("成功登录");
                                 IE.launchPage.loadPopUpLabel.showMessageWithAnimation(username + "，欢迎进入游戏！");
-                                MyDbDate.setUserName(username);
-                                MyDbDate.setPwd(pwd);
 
                                 // 在文件记录下来登录名，引用一个函数
                                 try {

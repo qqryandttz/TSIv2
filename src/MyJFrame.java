@@ -5,7 +5,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-
+import java.awt.CardLayout;
+import java.awt.Container;
+import javax.swing.JPanel;
 import java.awt.event.*;
 
 /**
@@ -90,7 +92,16 @@ class MyJFrame extends JFrame {
 
     void addJMenuListener() {
 
-        // myLoginPage = new MyLoginPage("登入页面", IE);
+        myJMenuItem[0][0].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IE.musicSet();
+                String isPage = IE.getIsPage();
+                if (isPage == "Launch") {
+                    MyStyle.playBgMusic();
+                }
+            }
+        });
 
         myJMenuItem[2][0].addActionListener(new ActionListener() {
             @Override

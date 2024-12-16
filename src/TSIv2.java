@@ -1,8 +1,9 @@
 import java.awt.CardLayout;
 import java.awt.Container;
-
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 /**
  * 主程序执行
@@ -11,6 +12,7 @@ public class TSIv2 {
     public static void main(String[] args) {
 
         InterfaceExecution interfaceExecution = new InterfaceExecution();
+        interfaceExecution.start();
         MyStyle.stopMusic();
 
     }
@@ -31,24 +33,40 @@ class InterfaceExecution {
     Container myJFrameContentPane;
 
     OpenFile openFile = new OpenFile();
+    MusicSetting musicSetting;
+
+    void musicSet() {
+        musicSetting = new MusicSetting();
+    }
 
     Boolean isDBexist;
     Boolean isDBchanged;
-    int isToggle;
+    private String isPage;
 
-    public static enum ToggleState {
-        Launch,
-        Story,
-        Chapter,
-        Plot,
-        Achievement
+    /**
+     * 可以得到
+     * "Launch", "Story", "Chapter", "Plot", "Achievement"
+     */
+    public String getIsPage() {
+        return isPage;
     }
-    // ToggleState currentState = ToggleState.LA;
 
-    InterfaceExecution() {
+    /**
+     * 请输入
+     * "Launch", "Story", "Chapter", "Plot", "Achievement"
+     */
+    public void setIsPage(String isPage) {
+        Set<String> validStates = new HashSet<>(Arrays.asList("Launch", "Story", "Chapter", "Plot", "Achievement"));
+        if (validStates.contains(isPage)) {
+            this.isPage = isPage;
+        } else {
+            throw new IllegalArgumentException("Invalid state: " + isPage);
+        }
+    }
+
+    void start() {
 
         this.initLoading();
-
         this.loadAllPages();
     }
 
@@ -66,6 +84,7 @@ class InterfaceExecution {
         launchPage = new LaunchPage(this);
         myJFrameContentPane.add("launch", launchPage);
         cardLayout.show(myJFrameContentPane, "launch");
+        setIsPage("Launch");
 
         MyStyle.playBgMusic();
     }
@@ -78,70 +97,19 @@ class InterfaceExecution {
 
     }
 
-    void DBconnect() {
-
-        // 去获取连接，然后查询是否存在DB，给isDBexist赋值
-
-        if (!isDBexist) {
-            this.initDB();
-
-        } else if (isDBexist) {
-
-            // 先询问用户是否进行检测
-
-            // Boolean isDBchanged = this.数据库内容检测();
-
-            if (!isDBchanged) {
-            } else {
-                this.数据库改变();
-            }
-        }
-
-    }
-
-    void initDB() {
-
-        // 查看是否有用户
-
-    }
-
-    Boolean checkDB() {
-
-        return true;
-    }
-
-    void 数据库改变() {
-
-        // 询问需要哪一种改变
-
-        this.数据库清空();
-
-        this.数据库追加();
-
-    }
-
-    void 数据库清空() {
-
-    }
-
-    void 数据库追加() {
-
-    }
+    // void 数据库改变() {
+    // // 询问需要哪一种改变
+    // this.数据库清空();
+    // this.数据库追加();
+    // }
 
     void loadAllPages() {
 
-        // 进行用户查询：userQuery
-        storyPage = new StoryPage();
+        // storyPage = new StoryPage();
         chapterPage = new ChapterPage();
         plotPage = new PlotPage();
 
     }
-
-}
-
-class StoryPage extends JPanel {
-
-    StarrySkyPanel starrySkyPanel;
 
 }
 

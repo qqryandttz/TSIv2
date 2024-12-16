@@ -110,6 +110,7 @@ class MyDB {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("难不成是这里的报错？");
         } finally {
             try {
                 if (rs != null)
@@ -160,17 +161,12 @@ class MyDB {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null)
-                    rs.close();
-                if (pstmt != null)
-                    pstmt.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
         }
 
+        if (isValid) {
+            MyDbDate.setUserName(username);
+            MyDbDate.setPwd(pwd);
+        }
         return isValid;
     }
 
@@ -228,7 +224,7 @@ class MyDB {
      */
     Boolean registerUser(String username, String pwd) {
         Boolean isRegister = false;
-        String insertQuery = "INSERT INTO 用户表 (用户名, 密码, 角色, 注册时间, 最后登入时间, 音乐开关,文本呈现速度, 是否自动登入, 成就数量) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO 用户表 (用户名, 密码, 角色, 注册时间, 最后登入时间,音乐开关,文本呈现速度, 是否自动登入, 成就数量) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = con.prepareStatement(insertQuery)) {
             pstmt.setString(1, username);
@@ -324,6 +320,7 @@ class MyDB {
                     try (ResultSet rs = pstmt.executeQuery()) {
                         if (rs.next()) {
                             isAuto = rs.getBoolean("是否自动登入");
+                            MyDbDate.setIsAutoLoad(isAuto);
                         }
                     }
                 }
@@ -355,7 +352,6 @@ class MyDB {
                     Set<String> retrievedMacsSet = new HashSet<>(Arrays.asList(retrievedMacsArray));
                     Set<String> providedMacsSet = new HashSet<>(macs);
 
-                    // 检查是否有任何匹配的MAC地址
                     isMatch = !Collections.disjoint(retrievedMacsSet, providedMacsSet);
                 }
             }
@@ -363,6 +359,44 @@ class MyDB {
             e.printStackTrace();
         }
 
+        if (isMatch) {
+            MyDbDate.setUserName(userName);
+        }
+
         return isMatch;
     }
+
+    // public static int hasOrNot(String listName, String[] value_names, String[]
+    // values) {
+    // String query = "SELECT * FROM " + listName + " WHERE ";
+
+    // if (value_names.length != values.length) {
+    // AException.Exception("无效参数！");
+    // }
+
+    // for (int i = 0; i < value_names.length; i++) {
+    // query += value_names[i] + " = '" + values[i] + "'";
+
+    // if (i != value_names.length - 1) {
+    // query += " AND ";
+    // }
+    // }
+
+    // System.out.println(query);
+
+    // PreparedStatement preparedStatement;
+    // try {
+    // preparedStatement = con.prepareStatement(query);
+
+    // ResultSet resultSet = preparedStatement.executeQuery(query);
+
+    // if (resultSet.next()) {
+    // return HAS;
+    // }
+    // } catch (SQLException e) {
+
+    // }
+
+    // return HAS_NO;
+    // }
 }
