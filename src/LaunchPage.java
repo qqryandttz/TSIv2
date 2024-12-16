@@ -24,6 +24,7 @@ public class LaunchPage extends JPanel {
 
     MyProgressBar progressBar;
     MyLoginPage myLoginPage;
+    PopUpLabel loadPopUpLabel;
 
     LaunchPage(InterfaceExecution interfaceExecution) {
 
@@ -33,6 +34,7 @@ public class LaunchPage extends JPanel {
 
         AddStarrySkyPanel();
         AddTitle();
+        AddPopUpLable();
         AddStartBotton();
         this.setLayout(new BorderLayout());
         this.add(layeredPane, BorderLayout.CENTER);
@@ -43,6 +45,12 @@ public class LaunchPage extends JPanel {
         starrySkyPanel = new StarrySkyPanel();
         starrySkyPanel.setBounds(0, 0, 1600, 900);
         layeredPane.add(starrySkyPanel, new Integer(JLayeredPane.DEFAULT_LAYER));
+    }
+
+    void AddPopUpLable() {
+
+        loadPopUpLabel = new PopUpLabel();
+        layeredPane.add(loadPopUpLabel, new Integer(JLayeredPane.DEFAULT_LAYER + 10));
     }
 
     void AddTitle() {
@@ -89,8 +97,11 @@ public class LaunchPage extends JPanel {
                     if (!isAutoLoading()) {
                         myLoginPage = new MyLoginPage("登入页面", IE);
                     } else {
+
                         System.out.println("自动登录成功！");
-                        有弹窗;
+                        String username = MyDbDate.getUserName();
+                        IE.launchPage.loadPopUpLabel.showMessageWithAnimation(username + "，欢迎进入游戏！");
+
                         progressBar.smoothProgressTo(15, 30);
                     }
                 } else {
@@ -150,6 +161,7 @@ public class LaunchPage extends JPanel {
                     "TSIv2", "最近登录用户");
             List<String> macs = MacTools.getActiveMacList();
             MyDB myDB = new MyDB();
+            MyDbDate.setUserName(latestLoggedInUsername);
             return myDB.checkUserMacAddresses(latestLoggedInUsername, macs);
 
         } catch (Exception e) {

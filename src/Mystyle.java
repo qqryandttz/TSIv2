@@ -19,10 +19,10 @@ class MyStyle {
 
     static Color bottonColor = new Color(0x01, 0x42, 0x54);
     static Color bottonFontColor = new Color(0x1a, 0xbc, 0xbd);
-    static Font bottonFont = new Font("黑体", Font.BOLD, 30);
+    static Font bottonFont = new Font("微软雅黑", Font.PLAIN, 30);
 
     static Color bottonFontActiveColor = new Color(0x66, 0xfa, 0xf1);
-    static Font bottonActiveFont = new Font("黑体", Font.PLAIN, 27);
+    static Font bottonActiveFont = new Font("微软雅黑", Font.BOLD, 27);
 
     static public Color getBottonFontActiveColor() {
         return bottonFontActiveColor;

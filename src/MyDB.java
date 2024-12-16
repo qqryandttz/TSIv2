@@ -35,7 +35,8 @@ class MyDB {
         con = null;
         // String url = "jdbc:mysql://localhost:3306/" + DBName
         String url = "jdbc:mysql://47.98.243.58:3306/" + DBName
-                + "?useSSL=false&characterEncoding=utf-8&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai";
+                +
+                "?useSSL=false&characterEncoding=utf-8&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai";
         try {
             con = DriverManager.getConnection(url, user, password);
             if (con != null && !con.isClosed())
@@ -103,7 +104,8 @@ class MyDB {
                     isExist = true;
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "程序出错！未获取到数据库连接！", "警告", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "程序出错！未获取到数据库连接！", "警告",
+                        JOptionPane.ERROR_MESSAGE);
 
             }
         } catch (SQLException e) {
@@ -146,12 +148,14 @@ class MyDB {
 
                     int affectedRows = pstmtUpdate.executeUpdate();
                     if (affectedRows == 0) {
-                        JOptionPane.showMessageDialog(null, "程序出错！无法更新最后登入时间！", "警告", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "程序出错！无法更新最后登入时间！", "警告",
+                                JOptionPane.ERROR_MESSAGE);
 
                     }
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "程序出错！未获取到数据库连接！", "警告", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "程序出错！未获取到数据库连接！", "警告",
+                        JOptionPane.ERROR_MESSAGE);
 
             }
         } catch (SQLException e) {
@@ -179,7 +183,7 @@ class MyDB {
 
         try {
             if (con != null && !con.isClosed()) {
-                String updateQuery = "UPDATE 用户表 SET mac地址组 = ?, 是否自动登入 = TRUE WHERE 用户名 = ?";
+                String updateQuery = "UPDATE 用户表 SET mac地址组 = ?, 是否自动登入 = TRUE WHERE 用户名 =?";
                 pstmt = con.prepareStatement(updateQuery);
                 pstmt.setString(1, macAddressesString);
                 pstmt.setString(2, userName);
@@ -188,10 +192,12 @@ class MyDB {
                 if (affectedRows > 0) {
                     isSuccess = true;
                 } else {
-                    JOptionPane.showMessageDialog(null, "程序出错！无法自动登录！", "警告", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "程序出错！无法自动登录！", "警告",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "程序出错！未获取到数据库连接！", "警告", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "程序出错！未获取到数据库连接！", "警告",
+                        JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -222,7 +228,7 @@ class MyDB {
      */
     Boolean registerUser(String username, String pwd) {
         Boolean isRegister = false;
-        String insertQuery = "INSERT INTO 用户表 (用户名, 密码, 角色, 注册时间, 最后登入时间, 音乐开关, 文本呈现速度, 是否自动登入, 成就数量) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO 用户表 (用户名, 密码, 角色, 注册时间, 最后登入时间, 音乐开关,文本呈现速度, 是否自动登入, 成就数量) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = con.prepareStatement(insertQuery)) {
             pstmt.setString(1, username);
@@ -303,35 +309,55 @@ class MyDB {
     }
 
     /**
-     * 查找是否自动登入
+     * 先查找是否自动登录，再查找mac地址是否匹配
      */
     public Boolean checkUserMacAddresses(String userName, List<String> macs) {
+        Boolean isAuto = false;
         Boolean isMatch = false;
         String retrievedMacAddressesString = null;
 
         try {
             if (con != null && !con.isClosed()) {
-                String selectQuery = "SELECT mac地址组 FROM 用户表 WHERE 用户名 = ?";
+                String selectQuery = "SELECT 是否自动登入 FROM 用户表 WHERE 用户名 = ?";
                 try (PreparedStatement pstmt = con.prepareStatement(selectQuery)) {
                     pstmt.setString(1, userName);
                     try (ResultSet rs = pstmt.executeQuery()) {
                         if (rs.next()) {
-                            retrievedMacAddressesString = rs.getString("mac地址组");
+                            isAuto = rs.getBoolean("是否自动登入");
                         }
                     }
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "程序出错！未获取到数据库连接！", "警告", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "程序出错！未获取到数据库连接！", "警告",
+                        JOptionPane.ERROR_MESSAGE);
             }
 
-            // 将从数据库检索到的MAC地址组字符串拆分为单个MAC地址，并与提供的列表进行比较
-            if (retrievedMacAddressesString != null && !retrievedMacAddressesString.isEmpty()) {
-                String[] retrievedMacsArray = retrievedMacAddressesString.split(",");
-                Set<String> retrievedMacsSet = new HashSet<>(Arrays.asList(retrievedMacsArray));
-                Set<String> providedMacsSet = new HashSet<>(macs);
+            if (isAuto) {
+                if (con != null && !con.isClosed()) {
+                    String selectQuery = "SELECT mac地址组 FROM 用户表 WHERE 用户名 = ?";
+                    try (PreparedStatement pstmt = con.prepareStatement(selectQuery)) {
+                        pstmt.setString(1, userName);
+                        try (ResultSet rs = pstmt.executeQuery()) {
+                            if (rs.next()) {
+                                retrievedMacAddressesString = rs.getString("mac地址组");
+                            }
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "程序出错！未获取到数据库连接！", "警告",
+                            JOptionPane.ERROR_MESSAGE);
+                }
 
-                // 检查是否有任何匹配的MAC地址
-                isMatch = !Collections.disjoint(retrievedMacsSet, providedMacsSet);
+                // 将从数据库检索到的MAC地址组字符串拆分为单个MAC地址，并与提供的列表进行比较
+                if (retrievedMacAddressesString != null &&
+                        !retrievedMacAddressesString.isEmpty()) {
+                    String[] retrievedMacsArray = retrievedMacAddressesString.split(",");
+                    Set<String> retrievedMacsSet = new HashSet<>(Arrays.asList(retrievedMacsArray));
+                    Set<String> providedMacsSet = new HashSet<>(macs);
+
+                    // 检查是否有任何匹配的MAC地址
+                    isMatch = !Collections.disjoint(retrievedMacsSet, providedMacsSet);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

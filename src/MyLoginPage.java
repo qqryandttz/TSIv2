@@ -25,6 +25,7 @@ import java.io.IOException;
  */
 public class MyLoginPage {
 
+    InterfaceExecution IE;
     MyJFrame loginFrame;
     Container loginContentPane;
 
@@ -34,11 +35,12 @@ public class MyLoginPage {
     JRadioButton autoLoginRadioButton;
     roundedButton signButton, registerButton;
 
-    MyDB myDB;
+    MyDB myDB = new MyDB();
     Boolean isLoad = false;
 
-    MyLoginPage(String frameName, InterfaceExecution IE) {
+    MyLoginPage(String frameName, InterfaceExecution interfaceExecution) {
 
+        IE = interfaceExecution;
         loginFrame = new MyJFrame(frameName, 800, 450);
         loginFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         loginFrame.setLocationRelativeTo(IE.myJFrame);
@@ -169,7 +171,10 @@ public class MyLoginPage {
 
                             } else {
                                 System.out.println("成功登录");
-                                这里可以有那种自动弹窗，欢迎进入的
+                                IE.launchPage.loadPopUpLabel.showMessageWithAnimation(username + "，欢迎进入游戏！");
+                                MyDbDate.setUserName(username);
+                                MyDbDate.setPwd(pwd);
+
                                 // 在文件记录下来登录名，引用一个函数
                                 try {
                                     MyFileModifier.settingsParser(MyStyle.getTSIv2SettingFilePath(),

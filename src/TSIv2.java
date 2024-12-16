@@ -2,6 +2,7 @@ import java.awt.CardLayout;
 import java.awt.Container;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  * 主程序执行
@@ -22,7 +23,6 @@ class InterfaceExecution {
 
     CardLayout cardLayout;
     MyJFrame myJFrame;
-    JPanel glassPane;
     LaunchPage launchPage;
     StoryPage storyPage;
     ChapterPage chapterPage;
@@ -58,9 +58,6 @@ class InterfaceExecution {
         myJFrame.setJMenuBar(myJFrame.setMenu(3));
         myJFrame.addJMenuListener();
         myJFrame.setIE(this);
-
-        glassPane = (JPanel) myJFrame.getGlassPane();
-        myJFrame.add(glassPane);
 
         cardLayout = new CardLayout();
         myJFrameContentPane = myJFrame.getContentPane();
