@@ -153,8 +153,7 @@ public class StoryPage extends JPanel {
         });
 
         achievementButton = new RoundedButton("成就", 40);
-        layeredPane.add(achievementButton, new Integer(JLayeredPane.DEFAULT_LAYER +
-                10));
+        layeredPane.add(achievementButton, new Integer(JLayeredPane.DEFAULT_LAYER + 10));
 
         achievementButton.setBorder(lineBorder);
         achievementButton.setBorderPainted(true);
@@ -198,7 +197,7 @@ public class StoryPage extends JPanel {
                 MyStyle.getStoryImageFilePath(currentStory));
         contentPanel.setBounds(400, 225, contentPanel.getWidth(),
                 contentPanel.getHeight());
-        layeredPane.add(contentPanel, new Integer(JLayeredPane.DEFAULT_LAYER) + 10);
+        layeredPane.add(contentPanel, new Integer(JLayeredPane.DEFAULT_LAYER + 10));
         System.out.println("进来了吗？");
         layeredPane.repaint();
         layeredPane.revalidate();

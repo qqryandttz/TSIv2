@@ -65,12 +65,6 @@ class InterfaceExecution {
 
     }
 
-    // void 数据库改变() {
-    // // 询问需要哪一种改变
-    // this.数据库清空();
-    // this.数据库追加();
-    // }
-
     void addAllPages() {
 
         storyPage = new StoryPage(this);
