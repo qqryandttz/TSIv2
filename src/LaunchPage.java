@@ -175,8 +175,9 @@ public class LaunchPage extends JPanel {
     }
 
     void getDbDate(String userName) {
+        MyDbDate.clearMyDbDate();
         MyDB.dbGetUserDate(userName);
-        progressBar.smoothProgressTo(30, 40);
+        progressBar.smoothProgressTo(30, 80);
         int storyFolders = StoryFolderCounter.countStoryFolders();
         if (storyFolders == -1) {
             IE.revertLogin();
@@ -187,20 +188,28 @@ public class LaunchPage extends JPanel {
             JOptionPane.showMessageDialog(null, "不存在故事文件夹。", "提示",
                     JOptionPane.INFORMATION_MESSAGE);
         } else {
-            System.out.println("找到的故事文件夹数量: " + storyFolders);
-            progressBar.smoothProgressTo(40, 50);
-
             int efectFolder = 0;
             for (int i = 0; i < storyFolders; i++) {
                 if (getGameDate(i + 1)) {
                     efectFolder++;
                 } else {
-                    System.out.println("有效的故事文件夹数量: " + efectFolder);
                     break;
                 }
             }
+            JOptionPane.showMessageDialog(null,
+                    String.format("找到的故事文件夹数量: %d\n有效的故事文件夹数量: %d", storyFolders, efectFolder), "提示",
+                    JOptionPane.INFORMATION_MESSAGE);
+            progressBar.smoothProgressTo(80, 100);
 
             MyDbDate.setEfectFolder(efectFolder); // 存放数据
+
+            for (int i = 0; i < efectFolder; i++) {
+                // 对故事、章节进行存储
+                MyDbDate.addStoryDate(i + 1);
+                // MyDbDate.printAllStoriesAndChapters();
+                // 开始创建页面
+                IE.addAllPages();
+            }
         }
 
     }
@@ -211,8 +220,26 @@ public class LaunchPage extends JPanel {
     Boolean getGameDate(int storyNum) {
 
         String settingpath = MyStyle.getStorySettingFilePath(storyNum);
-        String storyId = MyFileModifier.readFieldValue(settingpath, "story", "id");
-        String storyName = MyFileModifier.readFieldValue(settingpath, "story", "name");
+        String[] listName = new String[3];
+        listName[0] = "故事ID";
+        listName[1] = "故事名称";
+        listName[2] = "是否完整";
+
+        String[] storyName = new String[3];
+
+        storyName[0] = MyFileModifier.readFieldValue(settingpath, "story", "id");
+        storyName[1] = MyFileModifier.readFieldValue(settingpath, "story", "name");
+        storyName[2] = "1";
+
+        if (listName != null && storyName != null) {
+            if (MyDB.hasOrNot("故事表", listName, storyName) == 1) {
+                return true;
+            }
+        } else {
+            System.out.println(listName + " " + storyName);
+            JOptionPane.showMessageDialog(null, "配置文件出错！", "警告",
+                    JOptionPane.ERROR_MESSAGE);
+        }
 
         return false;
     }

@@ -105,10 +105,11 @@ public class MyFileModifier {
             reader.close();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "无法读取配置文件。", "警告",
-                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
 
+        JOptionPane.showMessageDialog(null, "未读取到配置文件。" + section + "的有效值" + subField, "警告",
+                JOptionPane.ERROR_MESSAGE);
         return null;
 
     }
@@ -118,13 +119,15 @@ public class MyFileModifier {
      */
     public static void main(String[] args) {
 
-        String filePath = "B:\\1_project\\5_自写代码\\_200自写java\\TSIv2工作区\\TSIv2\\res\\story1\\setting.txt";
-        settingsParser(filePath, "story", "章节数", "61");
-        System.out.println("修改成功！");
+        // String filePath =
+        // "B:\\1_project\\5_自写代码\\_200自写java\\TSIv2工作区\\TSIv2\\res\\story1\\setting.txt";
+        // settingsParser(filePath, "story", "章节数", "61");
+        // System.out.println("修改成功！");
 
-        String section = "story";
-        String subField = "章节数";
-        String value = MyFileModifier.readFieldValue(filePath, section, subField);
+        String path = MyStyle.getStorySettingFilePath(1);
+        System.out.println(path);
+
+        String value = MyFileModifier.readFieldValue(path, "c01", "name");
         System.out.println("章节数: " + value);
     }
 }

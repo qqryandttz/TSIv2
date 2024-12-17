@@ -96,10 +96,48 @@ class MyJFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 IE.musicSet();
-                String isPage = MyDbDate.getIsPage();
-                if (isPage == "Launch") {
-                    MyStyle.playBgMusic();
-                }
+            }
+        });
+
+        myJMenuItem[0][2].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IE.goToLaunchPage();
+            }
+        });
+
+        myJMenuItem[1][0].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IE.goToLaunchPage();
+            }
+        });
+
+        myJMenuItem[1][1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IE.goToStoryPage();
+            }
+        });
+
+        myJMenuItem[1][2].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IE.goToChapterPage();
+            }
+        });
+
+        myJMenuItem[1][3].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IE.goToPlotPage();
+            }
+        });
+
+        myJMenuItem[1][4].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IE.goToAchievementPage();
             }
         });
 

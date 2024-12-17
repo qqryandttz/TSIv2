@@ -10,7 +10,15 @@ public class MusicSetting {
 
         if (result == JOptionPane.YES_OPTION) {
             MyStyle.startMusic();
+            String isPage = MyDbDate.getIsPage();
+            if (isPage == "Launch") {
+                MyStyle.playBgMusic();
+            } else if (isPage == "Story") {
+                MyStyle.playStoryBgMusic();
+
+            }
         } else if (result == JOptionPane.NO_OPTION) {
+            MyMusic.closeMusic();
             MyStyle.stopMusic();
         }
     }

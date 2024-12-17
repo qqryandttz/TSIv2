@@ -1,9 +1,5 @@
 import java.awt.CardLayout;
 import java.awt.Container;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import javax.swing.JPanel;
 
 /**
  * 主程序执行
@@ -11,9 +7,10 @@ import javax.swing.JPanel;
 public class TSIv2 {
     public static void main(String[] args) {
 
-        InterfaceExecution interfaceExecution = new InterfaceExecution();
-        interfaceExecution.start();
+        // MyStyle.playBgMusic();
         MyStyle.stopMusic();
+        InterfaceExecution interfaceExecution = new InterfaceExecution();
+        interfaceExecution.initLoading();
 
     }
 }
@@ -42,12 +39,6 @@ class InterfaceExecution {
     Boolean isDBexist;
     Boolean isDBchanged;
 
-    void start() {
-
-        this.initLoading();
-        this.loadAllPages();
-    }
-
     void initLoading() {
 
         myJFrame = new MyJFrame("TSIv2", 1600, 900);
@@ -60,11 +51,10 @@ class InterfaceExecution {
         myJFrameContentPane.setLayout(cardLayout);
 
         launchPage = new LaunchPage(this);
-        myJFrameContentPane.add("launch", launchPage);
-        cardLayout.show(myJFrameContentPane, "launch");
+        myJFrameContentPane.add("Launch", launchPage);
+        cardLayout.show(myJFrameContentPane, "Launch");
         MyDbDate.setIsPage("Launch");
 
-        MyStyle.playBgMusic();
     }
 
     /**
@@ -81,26 +71,61 @@ class InterfaceExecution {
     // this.数据库追加();
     // }
 
-    void loadAllPages() {
+    void addAllPages() {
 
-        // storyPage = new StoryPage();
-        chapterPage = new ChapterPage();
-        plotPage = new PlotPage();
+        storyPage = new StoryPage(this);
+        myJFrameContentPane.add("Story", storyPage);
+
+        chapterPage = new ChapterPage(this);
+        myJFrameContentPane.add("Chapter", chapterPage);
+
+        plotPage = new PlotPage(this);
+        myJFrameContentPane.add("Plot", plotPage);
+
+        achievementPage = new AchievementPage(this);
+        myJFrameContentPane.add("AchievementPage", achievementPage);
+
+        cardLayout.show(myJFrameContentPane, "Story");
+        MyDbDate.setIsPage("Story");
+        revertLogin();
 
     }
 
-}
+    void goToLaunchPage() {
 
-class ChapterPage extends JPanel {
+        MyStyle.playBgMusic();
+        cardLayout.show(myJFrameContentPane, "Launch");
+        MyDbDate.setIsPage("Launch");
 
-    StarrySkyPanel starrySkyPanel;
+    }
 
-}
+    void goToStoryPage() {
 
-class PlotPage extends JPanel {
+        MyStyle.playStoryBgMusic();
+        cardLayout.show(myJFrameContentPane, "Story");
+        MyDbDate.setIsPage("Story");
 
-}
+    }
 
-class AchievementPage extends JPanel {
+    void goToChapterPage() {
+
+        cardLayout.show(myJFrameContentPane, "Chapter");
+        MyDbDate.setIsPage("Chapter");
+
+    }
+
+    void goToPlotPage() {
+
+        cardLayout.show(myJFrameContentPane, "Plot");
+        MyDbDate.setIsPage("Plot");
+
+    }
+
+    void goToAchievementPage() {
+
+        cardLayout.show(myJFrameContentPane, "Achievement");
+        MyDbDate.setIsPage("Achievement");
+
+    }
 
 }

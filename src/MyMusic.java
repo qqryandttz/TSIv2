@@ -12,22 +12,8 @@ import javazoom.jl.player.advanced.PlaybackListener;
 public class MyMusic {
 
     static Boolean musicState = true;
-    MusicThread musicOnceThread;
-    MusicThread musicLoopThread;
-
-    // public static void main(String[] args) {
-
-    // try {
-    // MyStyle myStyle = new MyStyle();
-    // myStyle.playBgMusic();
-    // Thread.sleep(3000);
-    // myStyle.stopMusic();
-
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-
-    // }
+    static MusicThread musicOnceThread;
+    static MusicThread musicLoopThread;
 
     Boolean getMusicStatic() {
         return musicState;
@@ -51,11 +37,18 @@ public class MyMusic {
 
     void playMusicLoop(String path) {
 
+        if (musicLoopThread != null) {
+            closeMusic();
+        }
+
         if (musicState) {
+
+            stopMusic();
+            startMusic();
+
             musicLoopThread = new MusicThread(path, this);
             musicLoopThread.start();
-        }
-        if (musicState) {
+
             musicLoopThread.musicPlayer.setPlayBackListener(new PlaybackListener() {
                 @Override
                 public void playbackFinished(PlaybackEvent event) {
@@ -63,6 +56,10 @@ public class MyMusic {
                 }
             });
         }
+    }
+
+    static void closeMusic() {
+        musicLoopThread.closeMusic();
     }
 
 }
@@ -91,8 +88,12 @@ class MusicThread extends Thread {
             try {
                 musicPlayer.myPlay();
             } catch (Exception e) {
-                e.printStackTrace();
+                // e.printStackTrace();
             }
+    }
+
+    void closeMusic() {
+        musicPlayer.closeMusic();
     }
 }
 
@@ -118,10 +119,14 @@ class MyMusicPlayer extends AdvancedPlayer {
                 try {
                     skipFrame();
                 } catch (JavaLayerException e) {
-                    e.printStackTrace();
+                    // e.printStackTrace();
                 }
             }
         }
+    }
+
+    void closeMusic() {
+        super.close();
     }
 
 }

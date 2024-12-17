@@ -92,8 +92,10 @@ class MyStyle {
         myMusic.playMusicOnce(pressButtonSound);
     }
 
-    static public void playStoryBgMusic(int storyNumber) {
-        myMusic.playMusicLoop(".\\res\\story" + storyNumber + ".mp3");
+    static public void playStoryBgMusic() {
+
+        int storyNumber = StoryPage.getCurrentStory();
+        myMusic.playMusicLoop(".\\res\\story" + storyNumber + "\\story.mp3");
     }
 
     static public void stopMusic() {
@@ -119,12 +121,21 @@ class MyStyle {
         return storySettingFilePath + storyNumber + "\\setting.txt";
     }
 
+    public static String getStoryImageFilePath(int storyNumber) {
+        System.out.println(storySettingFilePath + storyNumber + "\\story.png");
+        return storySettingFilePath + storyNumber + "\\story.png";
+    }
+
     public static String getTSIv2SettingFilePath() {
         return TSIv2SettingFilePath;
     }
 
     public static String getResFilePath() {
         return resFilePath;
+    }
+
+    public static String getTSIv2ImageFilepath() {
+        return resFilePath + "\\TSIv2\\story.png";
     }
 
 }
