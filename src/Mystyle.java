@@ -24,8 +24,14 @@ class MyStyle {
     static Color bottonFontActiveColor = new Color(0x66, 0xfa, 0xf1);
     static Font bottonActiveFont = new Font("微软雅黑", Font.BOLD, 27);
 
+    static Color TriangleButtonBackgroundColor = new Color(20, 25, 50);
+
     static public Color getBottonFontActiveColor() {
         return bottonFontActiveColor;
+    }
+
+    static public Color getTriangleButtonBackgroundColor() {
+        return TriangleButtonBackgroundColor;
     }
 
     static public Font getBottonActiveFont() {
@@ -136,6 +142,10 @@ class MyStyle {
 
     public static String getTSIv2ImageFilepath() {
         return resFilePath + "\\TSIv2\\story.png";
+    }
+
+    public static String getBackgroundImageFilepath() {
+        return resFilePath + "\\TSIv2\\image.png";
     }
 
 }

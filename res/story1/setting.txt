@@ -1,23 +1,28 @@
+﻿
 --story
-id: 1
-name: 那一刻未曾到来
-writer: qqry
-description: 每个人都有的这一刻。
-总章节数: 4
-章节数: 3
+id: 2
+name: 与将行
+writer: 榭十六
+description: 因为一本书，我成为了将军之女。 
+总章节数: 5
+章节数: 5
 --c01
 序号: 1
-name: 来临
-description: 这一天将要来临。
+name: 落水失忆
+description: 我失忆了，掉入水中后，我失去了所有的记忆。
 --c02
-序号: 2.1
-name: 温馨
-description: 温暖地度过一天。
+序号: 2
+name: 入宫
+description: 皇上要我入宫保护公主，究竟打什么主意？
 --c03
-序号: 2.2
-name: 自由
-description: 自在地度过一天。
---c04
 序号: 3
-name: 迎接
-description: 我会去迎接这一天。
+name: 初见公主
+description: 我顺利入宫，见到了公主，她那双眼睛十分好看
+--c04
+序号: 4
+name: 命悬一线
+description: 公主府遭遇了刺客我身负重伤，我能活下来吗？
+--c05
+序号: 5
+name: 梦醒时分
+description: 我醒来了，那真的是梦吗?

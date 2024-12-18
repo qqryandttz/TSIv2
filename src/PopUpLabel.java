@@ -7,8 +7,8 @@ import java.awt.geom.RoundRectangle2D;
 
 class PopUpLabel extends JLabel {
     private int startY = -30;
-    private int endY = 30; // 修改目标位置为70
-    private int moveDuration = 1000; // 移动持续时间1秒
+    private int endY = 30; // 修改目标位置为30
+    private int moveDuration = 500; // 移动持续时间0.5秒
     private int stayDuration = 2000; // 停留持续时间2秒
 
     public PopUpLabel() {

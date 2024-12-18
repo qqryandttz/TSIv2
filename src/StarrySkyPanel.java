@@ -21,6 +21,9 @@ public class StarrySkyPanel extends JPanel {
         setBackground(MyStyle.getStarrySkyBackgroundColor());
 
         InitStar();
+    }
+
+    void start() {
         new Timer(10, e -> {
             moveStar();
             repaint();

@@ -1,36 +1,24 @@
+
 --story
-id: 2
-name: 2那一刻未曾到来
-writer: 2qqry
-description: 2每个人都有的这一刻。
+id: 1
+name: 那一刻未曾到来
+writer: qqry
+description: 每个人都有的这一刻。
 总章节数: 4
 章节数: 3
 --c01
 序号: 1
-name: 2来临
-description: 2这一天将要来临。
+name: 来临
+description: 这一天将要来临。
 --c02
 序号: 2.1
-name: 2温馨
-description: 2温暖地度过一天。
+name: 温馨
+description: 温暖地度过一天。
 --c03
 序号: 2.2
-name: 2自由
-description: 2自在地度过一天。
+name: 自由
+description: 自在地度过一天。
 --c04
 序号: 3
-name: 2迎接
-description: 2我会去迎接这一天。
-
-
-
-
-
-
---成就1
-名称: 欢迎进入！
-内容: 用户第一次登录游戏
-
---成就2
-名称: 欢迎进入！
-内容: 用户第一次登录游戏
+name: 迎接
+description: 我会去迎接这一天。

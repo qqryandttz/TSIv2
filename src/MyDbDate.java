@@ -19,7 +19,7 @@ public class MyDbDate {
     static String signUpTime;
     static int isMusic;
     static int textSpeed;
-    static int isAutoLoad;
+    static int isAutoLoad = 0;
     static int achieveNum;
 
     public static void inputUserDate(String userName, String pwd, String role, int isMusic, int textSpeed,
@@ -148,6 +148,7 @@ public class MyDbDate {
     public static void addStoryDate(int storyNum) {
         MyDbDate dbDate = new MyDbDate();
         String path = MyStyle.getStorySettingFilePath(storyNum);
+        System.out.println("添加第" + storyNum + "个故事的数据" + path);
 
         // 读取故事数据
         String storyID = MyFileModifier.readFieldValue(path, "story", "id");

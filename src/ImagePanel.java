@@ -6,31 +6,46 @@ import javax.imageio.ImageIO;
 
 public class ImagePanel extends JPanel {
     private Image image;
+    // private String displayedImagePath; // 存储当前显示的图像的文件路径
+    // private String newImagePath; // 存储要设置的新图像的文件路径
 
     public ImagePanel(int width, int height, String imagePath) {
-        setPreferredSize(new Dimension(width, height));
-        System.out.println("创建了吧");
 
+        setPreferredSize(new Dimension(width, height));
+        loadImage(imagePath);
+    }
+
+    /**
+     * 加载图像和显示新的图像
+     */
+    public void loadImage(String imagePath) {
         try {
             image = ImageIO.read(new File(imagePath));
+            // newImagePath = imagePath;
+            repaint();
         } catch (IOException e) {
-            System.out.println("加载默认故事图片");
-
+            System.out.println("加载图像失败: " + imagePath);
             try {
                 image = ImageIO.read(new File(MyStyle.getTSIv2ImageFilepath()));
+                repaint();
             } catch (Exception e1) {
                 e.printStackTrace();
+                image = null;
             }
-
         }
     }
 
     @Override
     protected void paintComponent(Graphics g) {
+
+        // if (!newImagePath.equals(displayedImagePath)) {
+
         super.paintComponent(g);
         if (image != null) {
 
-            System.out.println("有被调用吗");
+            // displayedImagePath = newImagePath;
+            System.out.println("加载");
+
             int panelWidth = getWidth();
             int panelHeight = getHeight();
 
@@ -46,24 +61,11 @@ public class ImagePanel extends JPanel {
             int y = (panelHeight - scaledHeight) / 2;
 
             g.drawImage(image, x, y, scaledWidth, scaledHeight, null);
+            // displayedImagePath = newImagePath;
         } else {
             System.out.println("图片为空！");
         }
+        // }
     }
 
-    // 测试ImagePanel
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        frame.setTitle("Image Panel Example");
-        frame.setSize(800, 470);
-
-        ImagePanel imagePanel = new ImagePanel(800, 450,
-                MyStyle.getStoryImageFilePath(1));
-
-        frame.add(imagePanel);
-
-        frame.setVisible(true);
-    }
 }

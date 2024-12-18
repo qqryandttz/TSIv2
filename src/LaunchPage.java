@@ -45,6 +45,7 @@ public class LaunchPage extends JPanel {
 
         starrySkyPanel = new StarrySkyPanel();
         starrySkyPanel.setBounds(0, 0, 1600, 900);
+        starrySkyPanel.start();
         layeredPane.add(starrySkyPanel, new Integer(JLayeredPane.DEFAULT_LAYER));
     }
 
@@ -73,7 +74,7 @@ public class LaunchPage extends JPanel {
 
     void AddStartBotton() {
 
-        startBotton = new RoundedButton("START", 30);
+        startBotton = new RoundedButton("Load", 30);
         layeredPane.add(startBotton, new Integer(JLayeredPane.DEFAULT_LAYER + 10));
         startBotton.setBorderPainted(false);
 
@@ -158,6 +159,11 @@ public class LaunchPage extends JPanel {
      * 查找到用户名，再去看是否开启自动登录，如果开启，就获取mac地址，获取成功就自动登入
      */
     Boolean isAutoLoading() {
+
+        if (MyDbDate.isAutoLoad == 1) {
+            return false;
+        }
+
         try {
 
             latestLoggedInUsername = MyFileModifier.readFieldValue(MyStyle.getTSIv2SettingFilePath(),
@@ -196,19 +202,30 @@ public class LaunchPage extends JPanel {
                     break;
                 }
             }
-            JOptionPane.showMessageDialog(null,
-                    String.format("找到的故事文件夹数量: %d\n有效的故事文件夹数量: %d", storyFolders, efectFolder), "提示",
-                    JOptionPane.INFORMATION_MESSAGE);
-            progressBar.smoothProgressTo(80, 100);
 
-            MyDbDate.setEfectFolder(efectFolder); // 存放数据
+            if (efectFolder == 0) {
 
-            for (int i = 0; i < efectFolder; i++) {
-                // 对故事、章节进行存储
-                MyDbDate.addStoryDate(i + 1);
-                // MyDbDate.printAllStoriesAndChapters();
-                // 开始创建页面
-                IE.addAllPages();
+                IE.revertLogin();
+                JOptionPane.showMessageDialog(null,
+                        String.format("找到的故事文件夹数量: %d\n故事文件夹全部无效！", storyFolders), "提示",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+            } else {
+
+                JOptionPane.showMessageDialog(null,
+                        String.format("找到的故事文件夹数量: %d\n有效的故事文件夹数量: %d", storyFolders, efectFolder), "提示",
+                        JOptionPane.INFORMATION_MESSAGE);
+                progressBar.smoothProgressTo(80, 100);
+
+                MyDbDate.setEfectFolder(efectFolder); // 存放数据
+
+                for (int i = 0; i < efectFolder; i++) {
+                    // 对故事、章节进行存储
+                    MyDbDate.addStoryDate(i + 1);
+                    MyDbDate.printAllStoriesAndChapters();
+                    // 开始创建页面
+                    IE.addAllPages();
+                }
             }
         }
 
@@ -227,6 +244,7 @@ public class LaunchPage extends JPanel {
 
         String[] storyName = new String[3];
 
+        System.out.println("launch开始查找" + settingpath + "的ID和名称");
         storyName[0] = MyFileModifier.readFieldValue(settingpath, "story", "id");
         storyName[1] = MyFileModifier.readFieldValue(settingpath, "story", "name");
         storyName[2] = "1";

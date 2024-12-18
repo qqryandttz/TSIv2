@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,6 +69,8 @@ public class MyFileModifier {
                     JOptionPane.ERROR_MESSAGE);
         }
 
+        System.out.println("===========================");
+
     }
 
     /**
@@ -86,20 +89,41 @@ public class MyFileModifier {
             String currentSection = "";
             String line;
 
+            // wc，如果主字段在第一行，会直接跳过不读取，会这样
             while ((line = reader.readNonBlankLine()) != null) {
                 if (line.startsWith("--")) {
                     currentSection = line.substring(2).trim();
-                } else {
-                    String[] parts = line.split(": ", 2);
-                    if (parts.length == 2) {
-                        String field = parts[0].trim();
-                        String value = parts[1].trim();
+                    // System.out.println("当前为主字段" + currentSection);
 
-                        if (currentSection.equals(section) && field.equals(subField)) {
-                            reader.close();
-                            return value;
+                    if (currentSection.equalsIgnoreCase(section)) {
+
+                        System.out.println("找到主字段" + currentSection);
+
+                        while ((line = reader.readNonBlankLine()) != null && !line.startsWith("--")) {
+                            String[] parts = line.split(": ", 2);
+                            if (parts.length == 2) {
+                                System.out.println(Arrays.toString(parts) + "成功分成两部分");
+                                String field = parts[0].trim();
+                                String value = parts[1].trim();
+
+                                if (field.equals(subField)) {
+                                    System.out.println(Arrays.toString(parts) + "找到" + field + "下的副字段" + subField);
+                                    reader.close();
+                                    return value;
+                                } else {
+                                    System.out.println(Arrays.toString(parts) + "没有找到" + field + "下的副字段" + subField);
+                                }
+                            } else {
+                                System.out.println(currentSection + "没有成功分成两部分，格式出错，请使用英文冒号+空格");
+                            }
                         }
+
                     }
+
+                } else if (currentSection.equalsIgnoreCase(section)) {
+
+                } else {
+                    // System.out.println("没有找到主字段");
                 }
             }
             reader.close();
@@ -108,7 +132,7 @@ public class MyFileModifier {
             e.printStackTrace();
         }
 
-        JOptionPane.showMessageDialog(null, "未读取到配置文件。" + section + "的有效值" + subField, "警告",
+        JOptionPane.showMessageDialog(null, "未读取到配置文件。" + filePath + "中" + section + "的有效值" + subField, "警告",
                 JOptionPane.ERROR_MESSAGE);
         return null;
 
@@ -124,10 +148,10 @@ public class MyFileModifier {
         // settingsParser(filePath, "story", "章节数", "61");
         // System.out.println("修改成功！");
 
-        String path = MyStyle.getStorySettingFilePath(1);
+        String path = MyStyle.getStorySettingFilePath(2);
         System.out.println(path);
 
-        String value = MyFileModifier.readFieldValue(path, "c01", "name");
+        String value = MyFileModifier.readFieldValue(path, "story", "writer");
         System.out.println("章节数: " + value);
     }
 }

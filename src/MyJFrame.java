@@ -160,7 +160,7 @@ class MyJFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String message = "<html>" +
                         "<body>" +
-                        "<p>《The Slumber Interval》版本 2.0（测试版本） - qqry<br>" +
+                        "<p>《The Slumber Interval》版本 2.0<br>" +
                         "是一款基于Java开发的开源视觉小说游戏框架。</p>" +
                         "<p>本软件遵循MIT开源协议，在遵守协议条款的前提下，<br>" +
                         "用户可自由使用本软件及其衍生作品。</p>" +
