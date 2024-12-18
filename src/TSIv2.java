@@ -65,23 +65,21 @@ class InterfaceExecution {
 
     }
 
-    void addAllPages() {
+    void addStoryPage() {
 
         storyPage = new StoryPage(this);
         myJFrameContentPane.add("Story", storyPage);
 
-        chapterPage = new ChapterPage(this);
-        myJFrameContentPane.add("Chapter", chapterPage);
-
         plotPage = new PlotPage(this);
         myJFrameContentPane.add("Plot", plotPage);
 
-        achievementPage = new AchievementPage(this);
-        myJFrameContentPane.add("AchievementPage", achievementPage);
-
-        cardLayout.show(myJFrameContentPane, "Story");
-        MyDbDate.setIsPage("Story");
+        goToStoryPage();
         revertLogin();
+
+        // chapterPage = new ChapterPage(this);
+        // myJFrameContentPane.add("Chapter", chapterPage);
+        // achievementPage = new AchievementPage(this);
+        // myJFrameContentPane.add("AchievementPage", achievementPage);
 
     }
 

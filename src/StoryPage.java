@@ -43,7 +43,7 @@ public class StoryPage extends JPanel {
 
     ImagePanel contentPanel;
     JLabel authorLabel;
-    JLabel storySummaryLabel;
+    JLabel storyLabel, storySummaryLabel;
 
     TriangleButton leftButton;
     TriangleButton rightButton;
@@ -70,7 +70,6 @@ public class StoryPage extends JPanel {
 
         IE = interfaceExecution;
         AddLayeredPane();
-        MyStyle.playStoryBgMusic();
 
         addTitle();
         addTitleButton();
@@ -202,11 +201,24 @@ public class StoryPage extends JPanel {
         contentPanel.setBounds(400, 200, 800, 450);
         layeredPane.add(contentPanel, new Integer(JLayeredPane.DEFAULT_LAYER + 10));
 
+        storyLabel = new JLabel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                // 背景色为黑
+                Color semiTransparentBlack = new Color(0, 0, 0, 190); // alpha，范围从0（透明）到255（不透明）
+                g.setColor(semiTransparentBlack);
+                g.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
+        layeredPane.add(storyLabel, new Integer(JLayeredPane.DEFAULT_LAYER + 15));
+        storyLabel.setBounds(400, 550, 800, 100);
+
         storySummaryLabel = new JLabel(MyDbDate.stories.get(currentStory - 1).storyDescription);
         layeredPane.add(storySummaryLabel, new Integer(JLayeredPane.DEFAULT_LAYER + 20));
         storySummaryLabel.setFont(new Font("宋体", Font.BOLD, 23));
-        storySummaryLabel.setForeground(new Color(190, 200, 230));
-        storySummaryLabel.setBounds(400, 500, 800, 150);
+        storySummaryLabel.setForeground(MyStyle.getSubTitleColor());
+        storySummaryLabel.setBounds(400, 550, 800, 100);
         storySummaryLabel.setHorizontalAlignment(SwingConstants.CENTER);
         storySummaryLabel.setVerticalAlignment(SwingConstants.CENTER);
 
@@ -302,8 +314,8 @@ public class StoryPage extends JPanel {
             public void actionPerformed(ActionEvent e) {
 
                 MyStyle.playPressButtonSound();
-                IE.musicSet();
-
+                IE.goToPlotPage();
+                IE.plotPage.startFileReader();
             }
         });
 
@@ -375,7 +387,7 @@ public class StoryPage extends JPanel {
             public void actionPerformed(ActionEvent e) {
 
                 MyStyle.playPressButtonSound();
-                IE.musicSet();
+                JOptionPane.showMessageDialog(null, "正在努力开发中...", "开发者", JOptionPane.INFORMATION_MESSAGE);
 
             }
         });
@@ -408,7 +420,7 @@ public class StoryPage extends JPanel {
         if (currentStory == 0) {
             currentStory = MyDbDate.efectFolder;
         }
-        System.out.println("向左，当前故事为：" + currentStory);
+        // System.out.println("向左，当前故事为：" + currentStory);
         title.setText(MyDbDate.stories.get(currentStory - 1).storyName);
         storySummaryLabel.setText(MyDbDate.stories.get(currentStory - 1).storyDescription);
         contentPanel.loadImage(MyStyle.getStoryImageFilePath(currentStory));
@@ -424,7 +436,7 @@ public class StoryPage extends JPanel {
         if (currentStory > MyDbDate.efectFolder) {
             currentStory = 1;
         }
-        System.out.println("向右，当前故事为：" + currentStory);
+        // System.out.println("向右，当前故事为：" + currentStory);
         title.setText(MyDbDate.stories.get(currentStory - 1).storyName);
         storySummaryLabel.setText(MyDbDate.stories.get(currentStory - 1).storyDescription);
         contentPanel.loadImage(MyStyle.getStoryImageFilePath(currentStory));

@@ -59,7 +59,8 @@ public class MyMusic {
     }
 
     static void closeMusic() {
-        musicLoopThread.closeMusic();
+        if (musicLoopThread != null)
+            musicLoopThread.closeMusic();
     }
 
 }

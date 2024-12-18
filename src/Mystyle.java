@@ -148,4 +148,15 @@ class MyStyle {
         return resFilePath + "\\TSIv2\\image.png";
     }
 
+    public static String getBackgroundImageFilepath(String x) {
+        return resFilePath + "\\TSIv2\\image" + x + ".png";
+    }
+
+    public static String getNewChapterFilepath() {
+        System.out.println(storySettingFilePath + StoryPage.getCurrentStory() + "\\chapter\\c0"
+                + MyDbDate.stories.get(StoryPage.getCurrentStory()) + ".txt");
+        return storySettingFilePath + StoryPage.getCurrentStory() + "\\chapter\\c0"
+                + MyDbDate.stories.get(StoryPage.getCurrentStory()) + ".txt";
+    }
+
 }

@@ -125,6 +125,8 @@ public class MyDbDate {
         int chapterTotalNum;
         String storyWriter;
         Boolean isComplete;
+        int currentChapter = 1;
+        int archivedRowCount = 0;
     }
 
     public static class ChapterDate {
@@ -133,6 +135,7 @@ public class MyDbDate {
         String chapterName;
         String chapterDescription;
         Boolean isBranch;
+        int archivedRowCount = 0;
     }
 
     // 添加故事数据
@@ -256,5 +259,9 @@ class AchievementDate {
     String storyID;
     String achieveName;
     String achievementDetails;
+
+}
+
+class ArchiveRecord {
 
 }

@@ -224,7 +224,7 @@ public class LaunchPage extends JPanel {
                     MyDbDate.addStoryDate(i + 1);
                     MyDbDate.printAllStoriesAndChapters();
                     // 开始创建页面
-                    IE.addAllPages();
+                    IE.addStoryPage();
                 }
             }
         }

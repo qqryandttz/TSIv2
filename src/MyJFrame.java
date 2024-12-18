@@ -5,9 +5,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import java.awt.CardLayout;
-import java.awt.Container;
-import javax.swing.JPanel;
 import java.awt.event.*;
 
 /**
@@ -109,6 +106,7 @@ class MyJFrame extends JFrame {
         myJMenuItem[1][0].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 IE.goToLaunchPage();
             }
         });
@@ -123,21 +121,31 @@ class MyJFrame extends JFrame {
         myJMenuItem[1][2].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                IE.goToChapterPage();
+                JOptionPane.showMessageDialog(null, "正在努力开发中...", "开发者", JOptionPane.INFORMATION_MESSAGE);
+
+                // IE.goToChapterPage();
             }
         });
 
         myJMenuItem[1][3].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                IE.goToPlotPage();
+
+                if (IE.storyPage != null) {
+                    IE.goToPlotPage();
+                } else {
+                    JOptionPane.showMessageDialog(null, "请先登录！", "提示", JOptionPane.INFORMATION_MESSAGE);
+
+                }
             }
         });
 
         myJMenuItem[1][4].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                IE.goToAchievementPage();
+                JOptionPane.showMessageDialog(null, "正在努力开发中...", "开发者", JOptionPane.INFORMATION_MESSAGE);
+
+                // IE.goToAchievementPage();
             }
         });
 

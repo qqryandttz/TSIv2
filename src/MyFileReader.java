@@ -22,10 +22,10 @@ class MyFileReader {
 
         MyFileReader reader = new MyFileReader(
                 "B:\\1_project\\5_自写代码\\_200自写java\\TSIv2工作区\\TSIv2\\res\\TSIv2\\setting.txt");
-        String nonBlankLine;
+        String Line;
 
-        while ((nonBlankLine = reader.readNonBlankLine()) != null) {
-            System.out.println(nonBlankLine);
+        while ((Line = reader.readNonBlankLine()) != null) {
+            System.out.println(Line);
         }
         reader.close();
     }

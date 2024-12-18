@@ -92,7 +92,7 @@ public class MyLoginPage {
 
         // loginField = new JTextField("input your user name");
         loginField = new JTextField("qqry");
-        loginField.setFont(new Font("Consolas", Font.BOLD, 24));
+        loginField.setFont(new Font("黑体", Font.BOLD, 24));
         loginField.setForeground(MyStyle.getSubTitleColor());
         loginField.setBackground(new Color(36, 39, 43));
         loginField.setBorder(BorderFactory.createEmptyBorder());
@@ -145,11 +145,7 @@ public class MyLoginPage {
                 String username = loginField.getText();
                 String pwd = pwdField.getText();
 
-                if (!isValidString(username)) {
-                    String message = "<html>请重新输入用户名！<br>用户名格式为：4-12位，<br>由数字、字母、部分特殊字符组成。</html>";
-                    JOptionPane.showMessageDialog(null, message, "登录失败", JOptionPane.INFORMATION_MESSAGE);
-
-                } else if (!isValidString(pwd)) {
+                if (!isValidString(pwd)) {
                     String message = "<html>请重新输入密码！<br>密码格式为：4-12位，<br>由数字、字母、部分特殊字符组成。</html>";
                     JOptionPane.showMessageDialog(null, message, "登录失败", JOptionPane.INFORMATION_MESSAGE);
 
