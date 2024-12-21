@@ -37,6 +37,8 @@ public class MyMusic {
 
     void playMusicLoop(String path) {
 
+        System.out.println("播放循环音乐：" + path);
+
         if (musicLoopThread != null) {
             closeMusic();
         }
@@ -94,7 +96,9 @@ class MusicThread extends Thread {
     }
 
     void closeMusic() {
-        musicPlayer.closeMusic();
+
+        if (musicPlayer != null)
+            musicPlayer.closeMusic();
     }
 }
 

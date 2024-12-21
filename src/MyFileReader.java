@@ -38,7 +38,7 @@ class MyFileReader {
             bufferedReader = new BufferedReader(inputStreamReader);
         } catch (IOException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "无法访问文件！(请联系我)", "警告", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "文件不完整或无法访问文件！", "警告", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 

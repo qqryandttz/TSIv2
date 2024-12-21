@@ -86,6 +86,16 @@ class MyStyle {
     static public String pressButtonSound = ".\\res\\TSIv2\\pressButtonSound.MP3";
     static public String storyBgMusic = ".\\res\\" + "story" + ".mp3";
 
+    static void playChapterOnceMp3(String path) {
+
+        myMusic.playMusicOnce(path);
+    }
+
+    static void playChapterLoopMp3(String path) {
+
+        myMusic.playMusicLoop(path);
+    }
+
     static public void playBgMusic() {
         myMusic.playMusicLoop(bgMusic);
     }
@@ -153,10 +163,33 @@ class MyStyle {
     }
 
     public static String getNewChapterFilepath() {
-        System.out.println(storySettingFilePath + StoryPage.getCurrentStory() + "\\chapter\\c0"
-                + MyDbDate.stories.get(StoryPage.getCurrentStory()) + ".txt");
-        return storySettingFilePath + StoryPage.getCurrentStory() + "\\chapter\\c0"
-                + MyDbDate.stories.get(StoryPage.getCurrentStory()) + ".txt";
+        String path = storySettingFilePath + StoryPage.getCurrentStory() + "\\chapter\\c0"
+                + MyDbDate.stories.get(StoryPage.getCurrentStory() - 1).currentChapter + ".txt";
+        System.out.println(path);
+        return path;
+    }
+
+    public static String getChapterImgFilepath() {
+
+        String path = storySettingFilePath + StoryPage.getCurrentStory() + "\\img\\";
+        System.out.println(path);
+        return path;
+    }
+
+    public static String getChapterOnceMp3Filepath() {
+
+        String path = storySettingFilePath + StoryPage.getCurrentStory() + "\\music\\LoopMusic\\";
+        System.out.println(path);
+        return path;
+
+    }
+
+    public static String getChapterLoopMp3Filepath() {
+
+        String path = storySettingFilePath + StoryPage.getCurrentStory() + "\\music\\OnceMusic\\";
+        System.out.println(path);
+        return path;
+
     }
 
 }

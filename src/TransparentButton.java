@@ -1,14 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
 
 public class TransparentButton extends JButton {
 
-    private float alpha = 0.5f; // 透明度，默认值，可以通过方法修改
-    private Color borderColor = Color.BLACK; // 边框颜色，默认黑色
-    private Color backgroundColor = new Color(0, 0, 0, 0); // 透明背景色，默认完全透明
-    private Color textColor = Color.BLACK; // 字体颜色，默认黑色
-    private int cornerRadius = 10; // 圆角半径，默认值，可通过方法修改
+    private float alpha = 0.5f; // 透明度，默认值，可通过方法修改
+    private Color borderColor = Color.BLACK; // 边框默认黑色
+    private Color backgroundColor = new Color(0, 0, 0, 0); // 默认完全透明
+    private Color textColor = Color.BLACK; // 字体默认黑色
+    private int cornerRadius = 10; // 圆角半径，默认值，可修改
+    private float glowAlpha = 0.3f; // 发光的透明度，可调整
 
     public TransparentButton() {
         super();
@@ -16,6 +16,11 @@ public class TransparentButton extends JButton {
         setBorderPainted(false); // 先不绘制默认边框
         setOpaque(false); // 按钮整体设为非不透明，配合透明度设置生效
         setForeground(textColor); // 设置字体颜色
+        setFocusPainted(false); // 禁用焦点边框
+        setFocusable(false);
+
+        setHorizontalAlignment(SwingConstants.CENTER);
+        setVerticalAlignment(SwingConstants.CENTER);
     }
 
     public TransparentButton(String text) {
@@ -24,6 +29,8 @@ public class TransparentButton extends JButton {
         setBorderPainted(false);
         setOpaque(false);
         setForeground(textColor);
+        setFocusPainted(false);
+        setFocusable(false);
     }
 
     // 设置透明度的方法
@@ -72,15 +79,16 @@ public class TransparentButton extends JButton {
         if (borderColor != null) {
             g2.setColor(borderColor);
             g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, cornerRadius, cornerRadius);
+            Color glowColor = new Color(
+                    Math.min((int) (borderColor.getRed() * 1.2), 255),
+                    Math.min((int) (borderColor.getGreen() * 1.2), 255),
+                    Math.min((int) (borderColor.getBlue() * 1.2), 255),
+                    (int) (255 * glowAlpha));
+            g2.setColor(glowColor);
+            g2.drawRoundRect(2, 2, getWidth() - 5, getHeight() - 5, cornerRadius, cornerRadius);
         }
 
-        // 设置字体透明度
-        Composite originalComposite = g2.getComposite();
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-
         super.paintComponent(g2);
-
-        g2.setComposite(originalComposite);
         g2.dispose();
     }
 

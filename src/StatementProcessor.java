@@ -5,7 +5,7 @@ public class StatementProcessor {
     InterfaceExecution IE;
     PlotPage plotPage;
     MyFileReader fileReader;
-    String Line;
+    String Line, needLine[];
     Boolean isChoice = false; // 是否在选择
     Boolean isFindSelect = false; // 是否找到选项
     Boolean isInSelect = false; // 是否在选项
@@ -24,11 +24,17 @@ public class StatementProcessor {
 
     void simpleAnalyze() {
 
-        while (((Line = fileReader.readNonBlankLine()) != null) && !isEnding) {
+        if (((Line = fileReader.readNonBlankLine()) != null) && !isEnding) {
+
+            plotPage.removeNameButton();
+            plotPage.removeOptButton();
+
             currentLine++;
             // 读取所有语句
 
-            if (currentLine < MyDbDate.stories.get(StoryPage.getCurrentStory()).archivedRowCount) {
+            System.out.println(Line);
+
+            if (currentLine < MyDbDate.stories.get(StoryPage.getCurrentStory() - 1).archivedRowCount) {
                 // 没到上次存储的行数，则跳过
 
             } else if (isChoice && !isFindSelect && !(Line.length() == 1 && Line.charAt(0) == isSelected)) {
@@ -57,19 +63,35 @@ public class StatementProcessor {
                 if (Line.charAt(0) == '#') {
                     // 处理普通段
 
+                    needLine = Line.split("#");
+                    plotPage.storyButton.setText("<html>" + needLine[1] + "<html>");
+
                 } else if (Line.charAt(0) == '-') {
                     // 处理图片
+                    needLine = Line.split("-");
+                    String path = MyStyle.getChapterImgFilepath() + needLine[1] + ".png";
+                    plotPage.setBackgroundImage(path);
+                    simpleAnalyze();
 
                 } else if (Line.charAt(0) == '~') {
                     if (Line.charAt(1) == '~') {
                         // 处理音效
-
+                        needLine = Line.split("~~");
+                        String path = MyStyle.getChapterOnceMp3Filepath() + needLine[1] + ".mp3";
+                        MyStyle.playChapterOnceMp3(path);
+                        simpleAnalyze();
                     } else {
                         // 处理背景音乐
+                        needLine = Line.split("~");
+                        String path = MyStyle.getChapterOnceMp3Filepath() + needLine[1] + ".mp3";
+                        MyStyle.playChapterLoopMp3(path);
+                        simpleAnalyze();
 
                     }
 
                 } else if (Line.charAt(0) == '￥') {
+
+                    plotPage.attachOptButton();
 
                     if (isChoice) {
                         // 退出选择语句，初始化选择状态
@@ -136,11 +158,13 @@ public class StatementProcessor {
 
                 } else {
                     if (Line.contains(String.valueOf('：'))) {
-                        String[] parts = Line.split(String.valueOf('：'));
+                        needLine = Line.split(String.valueOf('：'));
 
-                        if (parts.length == 2) {
+                        if (needLine.length == 2) {
                             // 处理对话语句
-                            // parts[0] 与 parts[1]
+                            plotPage.attachNameButton();
+                            plotPage.nameButton.setText("<html>" + needLine[0] + "<html>");
+                            plotPage.storyButton.setText("<html>" + needLine[1] + "<html>");
 
                         } else {
                             System.out.println("格式出错，错误的冒号“：”位置。");
@@ -151,14 +175,14 @@ public class StatementProcessor {
                 }
 
             }
-            MyDbDate.stories.get(StoryPage.getCurrentStory()).archivedRowCount = currentLine;
+            MyDbDate.stories.get(StoryPage.getCurrentStory() - 1).archivedRowCount = currentLine;
 
+        } else {
+            // 退出循环，需要存档 archivedRowCount
+            // 如果有下一章，则打开下一章
+            // 打开下一个文件处理，先判断是否是分支章节，是就通过读取*0语句来判断要进入的章节
+            finalizeAndProceed();
         }
-
-        // 退出循环，需要存档 archivedRowCount
-        // 如果有下一章，则打开下一章
-        // 打开下一个文件处理，先判断是否是分支章节，是就通过读取*0语句来判断要进入的章节
-        finalizeAndProceed();
 
     }
 
@@ -166,7 +190,7 @@ public class StatementProcessor {
         String news = "当前“" + MyDbDate.stories.get(StoryPage.getCurrentStory()).storyName
                 + "”第" + MyDbDate.stories.get(StoryPage.getCurrentStory()).currentChapter
                 + "章结束，正在进入下一章。";
-        JOptionPane.showMessageDialog(null, news, "提示", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, news, "提示", JOptionPane.INFORMATION_MESSAGE);
 
         MyDbDate.stories.get(StoryPage.getCurrentStory()).currentChapter++;
 
